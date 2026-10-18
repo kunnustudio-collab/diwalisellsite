@@ -53,7 +53,7 @@
       "price": 649,
       "original_price": 999,
       "sku": "DA-LIGHT-001",
-      "stock": 36,
+      "stock": 33,
       "category_id": "diwali-lights",
       "is_active": true,
       "is_featured": true,
@@ -72,7 +72,7 @@
       "rating": 4.8,
       "reviews_count": 38,
       "created_at": "2026-10-01T10:00:00.000Z",
-      "updated_at": "2026-10-18T20:27:36.876Z"
+      "updated_at": "2026-10-18T20:36:47.881Z"
     },
     {
       "id": "prod-002",
@@ -83,7 +83,7 @@
       "price": 899,
       "original_price": 1399,
       "sku": "DA-DIYA-002",
-      "stock": 26,
+      "stock": 23,
       "category_id": "diyas-lamps",
       "is_active": true,
       "is_featured": true,
@@ -102,7 +102,7 @@
       "rating": 4.9,
       "reviews_count": 52,
       "created_at": "2026-10-02T10:00:00.000Z",
-      "updated_at": "2026-10-18T20:27:36.877Z"
+      "updated_at": "2026-10-18T20:36:47.881Z"
     },
     {
       "id": "prod-003",
@@ -321,6 +321,27 @@
       "rating": 4.9,
       "reviews_count": 65,
       "created_at": "2026-10-10T10:00:00.000Z"
+    },
+    {
+      "id": "prod-mveada1y",
+      "name": "11th Extra Active Product",
+      "slug": "11th-extra-active-product",
+      "description": "",
+      "short_description": "",
+      "price": 299,
+      "original_price": null,
+      "sku": "DA-EXTRA-4707",
+      "stock": 10,
+      "category_id": "diwali-lights",
+      "is_active": true,
+      "is_featured": false,
+      "image_url": "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80",
+      "additional_images": [],
+      "specifications": {},
+      "rating": 5,
+      "reviews_count": 0,
+      "created_at": "2026-10-18T20:36:44.711Z",
+      "updated_at": "2026-10-18T20:36:44.711Z"
     }
   ],
   "discounts": [
@@ -332,7 +353,7 @@
       "min_cart_value": 999,
       "max_discount_amount": 500,
       "max_redemptions": 500,
-      "current_redemptions": 17,
+      "current_redemptions": 18,
       "is_active": true,
       "starts_at": "2026-10-01T00:00:00.000Z",
       "expires_at": "2026-11-20T23:59:59.000Z",
@@ -749,6 +770,173 @@
           "total_price": 899
         }
       ]
+    },
+    {
+      "id": "ord-mvea3c7z-lm8n",
+      "order_number": "DA-2026-4248",
+      "customer_name": "Karan singh",
+      "customer_email": "kunnustudio@gmail.com",
+      "customer_phone": "9520956398",
+      "shipping_address": "etawah\netawah",
+      "city": "Etawah",
+      "state": "Uttar Pradesh",
+      "pin_code": "206126",
+      "payment_method": "youpi",
+      "payment_status": "pending",
+      "order_status": "Pending",
+      "subtotal": 899,
+      "discount_amount": 0,
+      "coupon_code": null,
+      "shipping_fee": 99,
+      "total_amount": 998,
+      "tracking_number": null,
+      "courier_name": null,
+      "payment_id": null,
+      "utr": null,
+      "notes": null,
+      "created_at": "2026-10-18T20:29:00.959Z",
+      "updated_at": "2026-10-18T20:29:00.959Z",
+      "items": [
+        {
+          "id": "item-mvea3c7z-yrmq",
+          "order_id": "ord-mvea3c7z-lm8n",
+          "product_id": "prod-002",
+          "product_name": "Decorative Brass-Style Diya Set",
+          "product_sku": "DA-DIYA-002",
+          "product_image": "/uploads/product-1792353608354-jlui5r.png",
+          "unit_price": 899,
+          "quantity": 1,
+          "total_price": 899
+        }
+      ]
+    },
+    {
+      "id": "ord-mvea3sbf-qy35",
+      "order_number": "DA-2026-8517",
+      "customer_name": "Karan singh",
+      "customer_email": "kunnustudio@gmail.com",
+      "customer_phone": "9520956398",
+      "shipping_address": "etawah\netawah",
+      "city": "Etawah",
+      "state": "Uttar Pradesh",
+      "pin_code": "206126",
+      "payment_method": "cod",
+      "payment_status": "pending",
+      "order_status": "Confirmed",
+      "subtotal": 899,
+      "discount_amount": 0,
+      "coupon_code": null,
+      "shipping_fee": 99,
+      "total_amount": 998,
+      "tracking_number": null,
+      "courier_name": null,
+      "payment_id": null,
+      "utr": null,
+      "notes": null,
+      "created_at": "2026-10-18T20:29:21.819Z",
+      "updated_at": "2026-10-18T20:29:21.819Z",
+      "items": [
+        {
+          "id": "item-mvea3sbf-bgjw",
+          "order_id": "ord-mvea3sbf-qy35",
+          "product_id": "prod-002",
+          "product_name": "Decorative Brass-Style Diya Set",
+          "product_sku": "DA-DIYA-002",
+          "product_image": "/uploads/product-1792353608354-jlui5r.png",
+          "unit_price": 899,
+          "quantity": 1,
+          "total_price": 899
+        }
+      ]
+    },
+    {
+      "id": "ord-mvead9yp-47hy",
+      "order_number": "DA-2026-1400",
+      "customer_name": "Aarav Patel",
+      "customer_email": "aarav.1792355804590@testmail.com",
+      "customer_phone": "9876543210",
+      "shipping_address": "101, Lotus Villa, Marine Drive",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pin_code": "400020",
+      "payment_method": "cod",
+      "payment_status": "pending",
+      "order_status": "Shipped",
+      "subtotal": 1298,
+      "discount_amount": 194.7,
+      "coupon_code": "DIWALI15",
+      "shipping_fee": 0,
+      "total_amount": 1103.3,
+      "tracking_number": "BD-DIWALI-987654",
+      "courier_name": "Bluedart Express",
+      "payment_id": null,
+      "utr": null,
+      "notes": null,
+      "created_at": "2026-10-18T20:36:44.593Z",
+      "updated_at": "2026-10-18T20:36:44.717Z",
+      "items": [
+        {
+          "id": "item-mvead9yp-z4th",
+          "order_id": "ord-mvead9yp-47hy",
+          "product_id": "prod-001",
+          "product_name": "Premium LED Fairy String Lights",
+          "product_sku": "DA-LIGHT-001",
+          "product_image": "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80",
+          "unit_price": 649,
+          "quantity": 2,
+          "total_price": 1298
+        }
+      ]
+    },
+    {
+      "id": "ord-mveadci1-45t8",
+      "order_number": "DA-2026-8035",
+      "customer_name": "Ananya Sharma",
+      "customer_email": "ananya.sharma@festivetest.in",
+      "customer_phone": "9876501234",
+      "shipping_address": "Flat 301, Diya Heights, Baner Road",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "pin_code": "411045",
+      "payment_method": "youpi",
+      "payment_status": "paid",
+      "order_status": "Confirmed",
+      "subtotal": 1548,
+      "discount_amount": 0,
+      "coupon_code": null,
+      "shipping_fee": 0,
+      "total_amount": 1548,
+      "tracking_number": null,
+      "courier_name": null,
+      "payment_id": "yp_pay_test_001",
+      "utr": "UTR_TEST_99887766",
+      "notes": "Please pack in festive gift wrapping | Verified via YouPI-PG Webhook (Amount: ₹1548, UTR: UTR_TEST_99887766)",
+      "created_at": "2026-10-18T20:36:47.881Z",
+      "updated_at": "2026-10-18T20:36:47.908Z",
+      "items": [
+        {
+          "id": "item-mveadci1-z217",
+          "order_id": "ord-mveadci1-45t8",
+          "product_id": "prod-001",
+          "product_name": "Premium LED Fairy String Lights",
+          "product_sku": "DA-LIGHT-001",
+          "product_image": "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80",
+          "unit_price": 649,
+          "quantity": 1,
+          "total_price": 649
+        },
+        {
+          "id": "item-mveadci1-f400",
+          "order_id": "ord-mveadci1-45t8",
+          "product_id": "prod-002",
+          "product_name": "Decorative Brass-Style Diya Set",
+          "product_sku": "DA-DIYA-002",
+          "product_image": "/uploads/product-1792353608354-jlui5r.png",
+          "unit_price": 899,
+          "quantity": 1,
+          "total_price": 899
+        }
+      ]
     }
   ],
   "reviews": [
@@ -823,6 +1011,21 @@
       "admin_reply": null,
       "created_at": "2026-10-18T20:27:33.677Z",
       "updated_at": "2026-10-18T20:27:33.677Z"
+    },
+    {
+      "id": "rev-mvead9z4-n3ur",
+      "product_id": "prod-001",
+      "customer_name": "Pooja Hegde",
+      "customer_email": "pooja@example.com",
+      "rating": 5,
+      "title": "Divine Festive Glow",
+      "comment": "The copper fairy lights gave an absolutely mesmerizing aura to our living room balcony.",
+      "status": "pending",
+      "is_flagged": false,
+      "is_sample": false,
+      "admin_reply": null,
+      "created_at": "2026-10-18T20:36:44.608Z",
+      "updated_at": "2026-10-18T20:36:44.608Z"
     }
   ],
   "faqs": [
@@ -965,6 +1168,14 @@
       "customer_email": "aarav.1792355253654@testmail.com",
       "discount_amount": 194.7,
       "redeemed_at": "2026-10-18T20:27:33.657Z"
+    },
+    {
+      "id": "red-mvead9yp",
+      "coupon_id": "disc-001",
+      "order_id": "ord-mvead9yp-47hy",
+      "customer_email": "aarav.1792355804590@testmail.com",
+      "discount_amount": 194.7,
+      "redeemed_at": "2026-10-18T20:36:44.593Z"
     }
   ]
 }

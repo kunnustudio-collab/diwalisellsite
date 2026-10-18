@@ -28,10 +28,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'No image file uploaded' }, { status: 400 });
     }
 
-    // Limit to max 10 files per request
-    if (filesToProcess.length > 10) {
+    // Safety limit per batch request
+    if (filesToProcess.length > 50) {
       return NextResponse.json(
-        { error: 'Maximum 10 images can be uploaded simultaneously.' },
+        { error: 'Maximum 50 images can be uploaded simultaneously in a single batch.' },
         { status: 400 }
       );
     }

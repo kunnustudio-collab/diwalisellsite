@@ -52,14 +52,6 @@ export default function AdminProductsPage() {
   const handleToggleActive = async (product: Product) => {
     const willBeActive = !product.is_active;
 
-    if (willBeActive && activeCount >= 10) {
-      setAlertMsg({
-        type: 'error',
-        text: 'Maximum 10 active products allowed on storefront. Please deactivate another product first before activating this one.',
-      });
-      return;
-    }
-
     try {
       const res = await fetch(`/api/admin/products/${product.id}`, {
         method: 'PUT',
@@ -108,17 +100,7 @@ export default function AdminProductsPage() {
     if (!files || files.length === 0) return;
 
     const current = getProductImages(editingProduct);
-    const availableSlots = 10 - current.length;
-
-    if (availableSlots <= 0) {
-      setAlertMsg({
-        type: 'error',
-        text: 'Maximum 10 images already reached for this product. Please remove an image first to upload more.',
-      });
-      return;
-    }
-
-    const filesArray = Array.from(files).slice(0, availableSlots);
+    const filesArray = Array.from(files);
     setUploadingImage(true);
 
     const formData = new FormData();
@@ -132,7 +114,7 @@ export default function AdminProductsPage() {
       });
       const data = await res.json();
       if (res.ok && data.urls && data.urls.length > 0) {
-        const merged = [...current, ...data.urls].slice(0, 10);
+        const merged = [...current, ...data.urls];
         setEditingProduct((prev) => ({
           ...prev,
           image_url: merged[0] || '',
@@ -140,7 +122,7 @@ export default function AdminProductsPage() {
         }));
         setAlertMsg({
           type: 'success',
-          text: `Uploaded ${data.urls.length} image(s)! Total: ${merged.length} / 10 images.`,
+          text: `Uploaded ${data.urls.length} image(s)! Total: ${merged.length} images.`,
         });
       } else {
         setAlertMsg({ type: 'error', text: data.error || 'Image upload failed.' });
@@ -157,10 +139,6 @@ export default function AdminProductsPage() {
     if (!editingProduct || !newImageUrl.trim()) return;
     const url = newImageUrl.trim();
     const current = getProductImages(editingProduct);
-    if (current.length >= 10) {
-      setAlertMsg({ type: 'error', text: 'Maximum 10 images limit reached.' });
-      return;
-    }
     if (current.includes(url)) {
       setAlertMsg({ type: 'error', text: 'This image URL is already in the gallery.' });
       return;
@@ -248,7 +226,7 @@ export default function AdminProductsPage() {
             Product Management
           </h1>
           <p className="text-xs text-stone-500 mt-1">
-            Edit and maintain your 10 storefront Diwali products, update inventory, prices, and imagery.
+            Manage and expand your complete Diwali product catalog without limits. Add unlimited items, update inventory, prices, and high-definition galleries.
           </p>
         </div>
 
@@ -262,7 +240,7 @@ export default function AdminProductsPage() {
               sku: `DA-SKU-${Date.now().toString().slice(-4)}`,
               stock: 30,
               category_id: 'diwali-lights',
-              is_active: activeCount < 10,
+              is_active: true,
               is_featured: false,
               description: '',
               short_description: '',
@@ -273,33 +251,33 @@ export default function AdminProductsPage() {
           className="px-5 py-2.5 rounded-full bg-maroon-900 text-gold-100 text-xs font-bold hover:bg-maroon-800 transition-colors shadow-sm flex items-center gap-2 self-start sm:self-auto"
         >
           <Plus className="w-4 h-4 text-gold-300" />
-          <span>Add / Replace Product</span>
+          <span>Add New Product</span>
         </button>
       </div>
 
-      {/* 10 Active Product Rule Banner */}
+      {/* Unlimited Active Products Status Banner */}
       <div className="p-4 rounded-2xl bg-white border border-gold-300 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-gold-100 text-maroon-900 flex items-center justify-center shrink-0">
             <Sparkles className="w-5 h-5 text-gold-700" />
           </div>
           <div>
-            <h4 className="font-serif font-bold text-sm text-maroon-950">
-              Storefront Active Limit: {activeCount} / 10 Products Active
-            </h4>
+            <div className="flex items-center gap-2">
+              <h4 className="font-serif font-bold text-sm text-maroon-950">
+                Catalog: {activeCount} Active Products ({products.length} Total)
+              </h4>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
+                Unlimited Mode
+              </span>
+            </div>
             <p className="text-xs text-stone-600">
-              The storefront enforces a maximum of exactly 10 active products for a curated festive experience.
+              No product limit — you can add, upload and activate as many products as you want for your festive store.
             </p>
           </div>
         </div>
 
-        <div className="w-full sm:w-48 bg-stone-100 rounded-full h-2.5 overflow-hidden">
-          <div
-            className={`h-2.5 rounded-full transition-all duration-500 ${
-              activeCount >= 10 ? 'bg-emerald-600' : 'bg-gold-500'
-            }`}
-            style={{ width: `${(activeCount / 10) * 100}%` }}
-          />
+        <div className="text-xs font-bold text-maroon-900 bg-gold-50 border border-gold-200 px-3 py-1.5 rounded-xl">
+          Active Storefront Items: {activeCount}
         </div>
       </div>
 
@@ -579,24 +557,20 @@ export default function AdminProductsPage() {
                 </div>
               </div>
 
-              {/* Product Photo Gallery (Up to 10 Images • PNG & JPG Mix) */}
+              {/* Product Photo Gallery (Unlimited Images • PNG & JPG Mix) */}
               <div className="p-4 rounded-2xl bg-ivory-50/80 border border-gold-300 space-y-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div>
                     <label className="block text-xs font-bold text-maroon-950">
-                      Product Photo Gallery (Up to 10 Images) *
+                      Product Photo Gallery (Unlimited Images) *
                     </label>
                     <span className="text-[10px] text-stone-500 block">
                       Mix PNG and JPG images freely. First image serves as the Main Storefront Cover.
                     </span>
                   </div>
                   
-                  <span className={`text-xs font-bold px-2.5 py-1 rounded-full self-start sm:self-auto ${
-                    getProductImages(editingProduct).length >= 10
-                      ? 'bg-amber-100 text-amber-900 border border-amber-300'
-                      : 'bg-gold-100 text-maroon-900 border border-gold-300'
-                  }`}>
-                    {getProductImages(editingProduct).length} / 10 Images Added
+                  <span className="text-xs font-bold px-2.5 py-1 rounded-full self-start sm:self-auto bg-gold-100 text-maroon-900 border border-gold-300">
+                    {getProductImages(editingProduct).length} Images Added
                   </span>
                 </div>
 
@@ -613,7 +587,7 @@ export default function AdminProductsPage() {
                     <button
                       type="button"
                       onClick={handleAddImageUrl}
-                      disabled={!newImageUrl.trim() || getProductImages(editingProduct).length >= 10}
+                      disabled={!newImageUrl.trim()}
                       className="px-3 py-2 bg-stone-800 text-gold-100 rounded-xl text-xs font-semibold hover:bg-maroon-900 transition-colors disabled:opacity-40"
                     >
                       Add URL
@@ -628,7 +602,7 @@ export default function AdminProductsPage() {
                       multiple
                       accept="image/png, image/jpeg, image/jpg, image/webp"
                       onChange={handleMultiImageUpload}
-                      disabled={uploadingImage || getProductImages(editingProduct).length >= 10}
+                      disabled={uploadingImage}
                       className="hidden"
                     />
                   </label>
@@ -689,7 +663,7 @@ export default function AdminProductsPage() {
                   </div>
                 ) : (
                   <div className="py-6 text-center text-xs text-stone-400 border-2 border-dashed border-gold-300 rounded-xl bg-white/60">
-                    No images added yet. Click &quot;Upload PNG / JPG Images&quot; or paste an image URL above (up to 10 images).
+                    No images added yet. Click &quot;Upload PNG / JPG Images&quot; or paste an image URL above.
                   </div>
                 )}
               </div>
@@ -727,7 +701,7 @@ export default function AdminProductsPage() {
                     }
                     className="rounded text-maroon-900 focus:ring-maroon-900"
                   />
-                  <span>Active on Storefront (Subject to 10 max limit)</span>
+                  <span>Active on Storefront (Visible to Customers)</span>
                 </label>
 
                 <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-stone-800">

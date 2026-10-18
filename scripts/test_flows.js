@@ -62,10 +62,10 @@ async function runTests() {
     assert(home.body.includes('DeepAura'), 'Home page contains brand name "DeepAura"');
     assert(home.body.includes('Diwali Decor'), 'Home page contains "Diwali Decor"');
 
-    // Test 2: Active Products Endpoint (Exactly 10 active products)
+    // Test 2: Active Products Endpoint (Unlimited products supported)
     const prods = await request(`${BASE}/api/products`);
     assert(prods.status === 200, 'Products API returns 200');
-    assert(prods.json && prods.json.total === 10, 'Products API returns EXACTLY 10 active starter products');
+    assert(prods.json && prods.json.total >= 10, 'Products API returns active catalog products (unlimited mode)');
     const firstProd = prods.json.products[0];
     assert(firstProd.name === 'Premium LED Fairy String Lights', 'Product 1 name matches starter catalog');
     assert(firstProd.price === 649, 'Product 1 price is ₹649');
@@ -173,7 +173,7 @@ async function runTests() {
     const unauthorizedRes = await request(`${BASE}/api/admin/me`);
     assert(unauthorizedRes.status === 401, 'Unauthorized request without cookie is blocked with 401');
 
-    // Test 15: Server Enforcement of Max 10 Active Products!
+    // Test 15: Unlimited Products Capability (11th+ product creation allowed)
     const create11thRes = await request(`${BASE}/api/admin/products`, {
       method: 'POST',
       headers: {
@@ -183,11 +183,11 @@ async function runTests() {
     }, {
       name: '11th Extra Active Product',
       price: 299,
-      sku: 'DA-EXTRA-11',
+      sku: `DA-EXTRA-${Date.now().toString().slice(-4)}`,
       stock: 10,
-      is_active: true, // Should be rejected by server!
+      is_active: true, // Succeeds in unlimited mode!
     });
-    assert(create11thRes.status === 400 && create11thRes.json.error.includes('Maximum 10 active products'), 'Server strictly rejects activating an 11th product!');
+    assert(create11thRes.status === 200 && create11thRes.json.product && create11thRes.json.product.name === '11th Extra Active Product', 'Server allows adding 11th+ active product in unlimited mode!');
 
     // Test 16: Admin Order Status Update
     const updateOrderRes = await request(`${BASE}/api/admin/orders/${createdOrder.id}`, {

@@ -169,7 +169,7 @@ export async function saveDatabase(data: DatabaseSchema): Promise<void> {
 }
 
 // -------------------------------------------------------------
-// DATA ACCESS LAYER: Products with 10 Active Product Rule
+// DATA ACCESS LAYER: Products (Unlimited Product Catalog)
 // -------------------------------------------------------------
 
 export async function getProducts(options?: {
@@ -232,7 +232,7 @@ export async function getProductByIdOrSlug(idOrSlug: string): Promise<Product | 
 }
 
 /**
- * Enforce maximum of 10 active products on the server!
+ * Save / Update product (Unlimited products supported)
  */
 export async function saveProduct(productData: Partial<Product> & { id?: string }): Promise<{
   success: boolean;
@@ -241,21 +241,6 @@ export async function saveProduct(productData: Partial<Product> & { id?: string 
 }> {
   const db = getDatabase();
   const isEditing = Boolean(productData.id && db.products.some((p) => p.id === productData.id));
-
-  // Check 10 active products limit when activating
-  if (productData.is_active === true) {
-    const currentlyActive = db.products.filter(
-      (p) => p.is_active && (!isEditing || p.id !== productData.id)
-    );
-
-    if (currentlyActive.length >= 10) {
-      return {
-        success: false,
-        error:
-          'Maximum 10 active products are allowed on the storefront. Please deactivate another product before activating this one.',
-      };
-    }
-  }
 
   if (isEditing) {
     const index = db.products.findIndex((p) => p.id === productData.id);
@@ -287,18 +272,8 @@ export async function saveProduct(productData: Partial<Product> & { id?: string 
     await saveDatabase(db);
     return { success: true, product: updated };
   } else {
-    // Creating a new product
-    const currentlyActive = db.products.filter((p) => p.is_active);
+    // Creating a new product (Unlimited products allowed)
     const willBeActive = productData.is_active ?? true;
-
-    if (willBeActive && currentlyActive.length >= 10) {
-      return {
-        success: false,
-        error:
-          'Maximum 10 active products allowed on storefront. Please mark this product as inactive or deactivate another first.',
-      };
-    }
-
     const newId = productData.id || `prod-${Date.now().toString(36)}`;
     const slug =
       productData.slug ||
