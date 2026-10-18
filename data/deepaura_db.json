@@ -1,0 +1,558 @@
+{
+  "profiles": [
+    {
+      "id": "admin-001",
+      "email": "admin@deepaura.com",
+      "full_name": "Store Administrator",
+      "role": "admin",
+      "created_at": "2026-10-18T19:47:01.630Z",
+      "_password_hash": "$2a$10$SD4EZAYNkuDPjdeZ656QIuwfYxjz4LjECXAUNMs3xQrE/aMJcYPVK"
+    }
+  ],
+  "categories": [
+    {
+      "id": "diwali-lights",
+      "name": "Diwali Lights",
+      "slug": "diwali-lights",
+      "description": "Luminous string lights, lanterns, and modern ambient festive lighting.",
+      "image_url": "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80",
+      "sort_order": 1
+    },
+    {
+      "id": "diyas-lamps",
+      "name": "Diyas & Lamps",
+      "slug": "diyas-lamps",
+      "description": "Handcrafted brass diyas, terracotta oil lamps, and smokeless LED diyas.",
+      "image_url": "https://images.unsplash.com/photo-1605647540924-852290f6b0d5?auto=format&fit=crop&w=800&q=80",
+      "sort_order": 2
+    },
+    {
+      "id": "rangoli-toran",
+      "name": "Rangoli & Toran",
+      "slug": "rangoli-toran",
+      "description": "Intricate brass and wooden rangoli stencils, organic colors, and auspicious door torans.",
+      "image_url": "https://images.unsplash.com/photo-1576872381149-7847515ce5d8?auto=format&fit=crop&w=800&q=80",
+      "sort_order": 3
+    },
+    {
+      "id": "gift-decoration",
+      "name": "Gift & Decoration",
+      "slug": "gift-decoration",
+      "description": "Artisanal puja thalis, marigold flower garlands, and luxury Diwali gift combos.",
+      "image_url": "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80",
+      "sort_order": 4
+    }
+  ],
+  "products": [
+    {
+      "id": "prod-001",
+      "name": "Premium LED Fairy String Lights",
+      "slug": "premium-led-fairy-string-lights",
+      "description": "Bring warm golden ambient enchantment to your home with our 20-meter heavy-duty copper wire LED fairy lights. Featuring 200 micro-LEDs that emit a soft golden glow, 8 dynamic lighting modes, and an energy-efficient waterproof adapter designed for Indian weather conditions.",
+      "short_description": "20-meter warm golden copper wire micro-LED string lights with 8 flashing modes.",
+      "price": 649,
+      "original_price": 999,
+      "sku": "DA-LIGHT-001",
+      "stock": 43,
+      "category_id": "diwali-lights",
+      "is_active": true,
+      "is_featured": true,
+      "image_url": "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80",
+      "additional_images": [
+        "https://images.unsplash.com/photo-1543258103-a62bdc069871?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80"
+      ],
+      "specifications": {
+        "Length": "20 Meters (65 Feet)",
+        "LED Count": "200 High-Lumen Warm White LEDs",
+        "Material": "Durable Copper Wire with Protective PVC Layer",
+        "Power Source": "Standard Indian 2-Pin Plug (220V)",
+        "Modes": "8 Light Effects (Steady, Shimmer, Flash, Fade, etc.)"
+      },
+      "rating": 4.8,
+      "reviews_count": 38,
+      "created_at": "2026-10-01T10:00:00.000Z",
+      "updated_at": "2026-10-18T19:48:04.217Z"
+    },
+    {
+      "id": "prod-002",
+      "name": "Decorative Brass-Style Diya Set",
+      "slug": "decorative-brass-style-diya-set",
+      "description": "An auspicious set of 6 antique gold finish brass-style metal diyas. Featuring ornate floral engravings and deep oil reservoirs that keep your sacred flame burning bright throughout the festive evening. Finished with a rust-resistant lacquer for lasting brilliance.",
+      "short_description": "Pack of 6 royal antique brass-style oil diyas with ornate floral motifs.",
+      "price": 899,
+      "original_price": 1399,
+      "sku": "DA-DIYA-002",
+      "stock": 30,
+      "category_id": "diyas-lamps",
+      "is_active": true,
+      "is_featured": true,
+      "image_url": "https://images.unsplash.com/photo-1605647540924-852290f6b0d5?auto=format&fit=crop&w=800&q=80",
+      "additional_images": [
+        "https://images.unsplash.com/photo-1573055418049-c8e0b7e3403b?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1603555501671-8f96b3fce8b4?auto=format&fit=crop&w=800&q=80"
+      ],
+      "specifications": {
+        "Set": "6 Pieces Diya Set",
+        "Material": "Cast Alloy with Antique Brass Gold Lacquer",
+        "Dimensions": "7.5 cm Diameter x 3.5 cm Height (each)",
+        "Weight": "450g Total Set Weight",
+        "Care": "Wipe with dry microfiber cloth"
+      },
+      "rating": 4.9,
+      "reviews_count": 52,
+      "created_at": "2026-10-02T10:00:00.000Z"
+    },
+    {
+      "id": "prod-003",
+      "name": "Floral Door Toran",
+      "slug": "floral-door-toran",
+      "description": "Welcome Goddess Lakshmi and esteemed guests with this handcrafted royal entrance bandhanwar toran. Crafted with vibrant saffron artificial marigolds, golden pearl beads, auspicious brass bells, and shimmering moti hangings. Perfectly sized for standard Indian home entrance doors.",
+      "short_description": "Handcrafted 38-inch entrance door toran with golden pearls and marigolds.",
+      "price": 749,
+      "original_price": 1199,
+      "sku": "DA-TORAN-003",
+      "stock": 25,
+      "category_id": "rangoli-toran",
+      "is_active": true,
+      "is_featured": true,
+      "image_url": "https://images.unsplash.com/photo-1576872381149-7847515ce5d8?auto=format&fit=crop&w=800&q=80",
+      "additional_images": [
+        "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80"
+      ],
+      "specifications": {
+        "Length": "38 Inches (96 cm)",
+        "Drop": "8 Inches hanging height",
+        "Elements": "Artificial Genda Flowers, Brass Ghungroos, Golden Beads",
+        "Hanging": "Dual sturdy brass side rings for easy hanging"
+      },
+      "rating": 4.7,
+      "reviews_count": 24,
+      "created_at": "2026-10-03T10:00:00.000Z"
+    },
+    {
+      "id": "prod-004",
+      "name": "Decorative Rangoli Stencil Kit",
+      "slug": "decorative-rangoli-stencil-kit",
+      "description": "Create flawless festive rangolis in seconds with our master 8-piece stencil kit. Contains laser-cut acrylic stencils featuring sacred Lakshmi steps, peacock plumes, lotus florets, and geometric mandalas, accompanied by 4 vibrant herbal non-toxic color dispensers.",
+      "short_description": "8-piece reusable acrylic stencil templates with 4 herbal color dispensers.",
+      "price": 499,
+      "original_price": 799,
+      "sku": "DA-RANG-004",
+      "stock": 60,
+      "category_id": "rangoli-toran",
+      "is_active": true,
+      "is_featured": false,
+      "image_url": "https://images.unsplash.com/photo-1574360773950-134376378ef8?auto=format&fit=crop&w=800&q=80",
+      "additional_images": [
+        "https://images.unsplash.com/photo-1605647540924-852290f6b0d5?auto=format&fit=crop&w=800&q=80"
+      ],
+      "specifications": {
+        "Contents": "8 Acrylic Templates + 4 Organic Color Bottles (100g each)",
+        "Diameter": "Stencils 20 cm to 30 cm diameter",
+        "Material": "Washable & Reusable 1.5mm Acrylic Sheets",
+        "Safety": "100% Skin-safe non-toxic organic mineral colors"
+      },
+      "rating": 4.6,
+      "reviews_count": 19,
+      "created_at": "2026-10-04T10:00:00.000Z"
+    },
+    {
+      "id": "prod-005",
+      "name": "Flameless LED Candle Set",
+      "slug": "flameless-led-candle-set",
+      "description": "Enjoy the mesmerizing beauty of traditional candle flames with complete safety for children and pets. This set of 12 ivory flameless LED tea-lights feature realistic 3D dancing wick flickers and come pre-fitted with long-lasting button batteries providing over 100 continuous glowing hours.",
+      "short_description": "Box of 12 realistic dancing-wick battery LED tealight candles.",
+      "price": 549,
+      "original_price": 849,
+      "sku": "DA-CAND-005",
+      "stock": 50,
+      "category_id": "diyas-lamps",
+      "is_active": true,
+      "is_featured": false,
+      "image_url": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80",
+      "additional_images": [
+        "https://images.unsplash.com/photo-1543258103-a62bdc069871?auto=format&fit=crop&w=800&q=80"
+      ],
+      "specifications": {
+        "Quantity": "12 Tealights per box",
+        "Battery": "Pre-installed CR2032 Lithium Cell (Replaceable)",
+        "Runtime": "100+ Hours continuous illumination",
+        "Flame": "Warm Amber 3D Flickering Soft LED"
+      },
+      "rating": 4.8,
+      "reviews_count": 31,
+      "created_at": "2026-10-05T10:00:00.000Z"
+    },
+    {
+      "id": "prod-006",
+      "name": "Lotus LED Decorative Lamp",
+      "slug": "lotus-led-decorative-lamp",
+      "description": "Symbolizing divine purity and prosperity, this glowing lotus blossom lamp is crafted with multi-tiered crystal acrylic petals and a warm inner LED sphere. Emits a gentle sacred aura, making it an exquisite centerpiece for your puja altar, coffee table, or foyer.",
+      "short_description": "Multilayer crystal petal lotus accent lamp with warm ambient glow.",
+      "price": 1199,
+      "original_price": 1799,
+      "sku": "DA-LOTUS-006",
+      "stock": 20,
+      "category_id": "diwali-lights",
+      "is_active": true,
+      "is_featured": true,
+      "image_url": "https://images.unsplash.com/photo-1519751138087-5bf79df62d5b?auto=format&fit=crop&w=800&q=80",
+      "additional_images": [
+        "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80"
+      ],
+      "specifications": {
+        "Diameter": "22 cm Diameter x 14 cm Height",
+        "Power": "USB Rechargeable 1200mAh Battery (Cord included)",
+        "Lighting": "3 Dimmable Warmth Tones (Warm Gold, Sunset Orange, Champagne)",
+        "Weight": "620 grams"
+      },
+      "rating": 4.9,
+      "reviews_count": 42,
+      "created_at": "2026-10-06T10:00:00.000Z"
+    },
+    {
+      "id": "prod-007",
+      "name": "Festive Paper Lantern Set",
+      "slug": "festive-paper-lantern-set",
+      "description": "Celebrate the timeless tradition of the Akash Kandil with our set of 4 modern artisanal paper hanging lanterns. Features intricate lattice cut-outs that cast enchanting geometric shadows across your walls and balconies. Folds flat for compact seasonal storage.",
+      "short_description": "Pack of 4 traditional artisanal hanging kandeel paper lanterns.",
+      "price": 599,
+      "original_price": 899,
+      "sku": "DA-LANT-007",
+      "stock": 35,
+      "category_id": "diwali-lights",
+      "is_active": true,
+      "is_featured": false,
+      "image_url": "https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=800&q=80",
+      "additional_images": [
+        "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80"
+      ],
+      "specifications": {
+        "Quantity": "4 Collapsible Lanterns in Assorted Festive Tones",
+        "Size": "30 cm (12 Inches) tall each",
+        "Material": "FSC-Certified 250 GSM Metallic Textured Paper",
+        "Accessories": "Includes internal wire expanders & hanging tassels"
+      },
+      "rating": 4.7,
+      "reviews_count": 18,
+      "created_at": "2026-10-07T10:00:00.000Z"
+    },
+    {
+      "id": "prod-008",
+      "name": "Premium Decorative Puja Thali",
+      "slug": "premium-decorative-puja-thali",
+      "description": "An exquisitely designed 11-inch ceremonial puja plate cast in heavy brass with royal meenakari enamel work. Comes complete with a central Lakshmi-Ganesh engraving, attached diya stand, twin sindoor and roli bowls, and bell. An heirloom-quality piece for every sacred Diwali ritual.",
+      "short_description": "11-inch handcrafted brass puja thali with intricate meenakari enamel work.",
+      "price": 1499,
+      "original_price": 2299,
+      "sku": "DA-THALI-008",
+      "stock": 15,
+      "category_id": "gift-decoration",
+      "is_active": true,
+      "is_featured": true,
+      "image_url": "https://images.unsplash.com/photo-1603555501671-8f96b3fce8b4?auto=format&fit=crop&w=800&q=80",
+      "additional_images": [
+        "https://images.unsplash.com/photo-1605647540924-852290f6b0d5?auto=format&fit=crop&w=800&q=80"
+      ],
+      "specifications": {
+        "Diameter": "11 Inches (28 cm)",
+        "Material": "Virgin Brass with Multicolored Meenakari Inlay",
+        "Weight": "850 grams",
+        "Includes": "Thali with attached Diya, Agarbatti holder, Roli bowl & Chawal katori"
+      },
+      "rating": 5,
+      "reviews_count": 47,
+      "created_at": "2026-10-08T10:00:00.000Z"
+    },
+    {
+      "id": "prod-009",
+      "name": "Artificial Marigold Flower Garland",
+      "slug": "artificial-marigold-flower-garland",
+      "description": "Enjoy everlasting freshness without wilting. This pack of 5 vibrant 5-foot genda phool garlands is meticulously handcrafted with high-density fluffy fabric petals in auspicious saffron-orange and sunflower-yellow. Washable, reusable year after year.",
+      "short_description": "Pack of 5 lush 5-foot washable artificial yellow-orange marigold malas.",
+      "price": 499,
+      "original_price": 799,
+      "sku": "DA-GRLND-009",
+      "stock": 70,
+      "category_id": "gift-decoration",
+      "is_active": true,
+      "is_featured": false,
+      "image_url": "https://images.unsplash.com/photo-1576872381149-7847515ce5d8?auto=format&fit=crop&w=800&q=80",
+      "additional_images": [
+        "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80"
+      ],
+      "specifications": {
+        "Pack": "5 Separate Strands",
+        "Length": "5 Feet (150 cm) each strand",
+        "Color": "Mixed Dual Tone (Deep Saffron + Golden Yellow)",
+        "Material": "Non-shedding synthetic fiber fabric"
+      },
+      "rating": 4.8,
+      "reviews_count": 29,
+      "created_at": "2026-10-09T10:00:00.000Z"
+    },
+    {
+      "id": "prod-010",
+      "name": "Luxury Diwali Home Decoration Combo",
+      "slug": "luxury-diwali-home-decoration-combo",
+      "description": "The ultimate all-in-one celebration curation for the discerning home. This grand festive hamper includes: 2x 20m Copper String Lights, 1x Decorative Brass Diya Set (6pcs), 1x Handcrafted Entrance Toran, 2x Marigold Garlands, and 1x Lotus Accent Lamp. Packed in a gold-embossed presentation gift box.",
+      "short_description": "The master festive hamper: lights, brass diyas, toran, marigolds & lotus lamp.",
+      "price": 3499,
+      "original_price": 5499,
+      "sku": "DA-COMBO-010",
+      "stock": 12,
+      "category_id": "gift-decoration",
+      "is_active": true,
+      "is_featured": true,
+      "image_url": "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80",
+      "additional_images": [
+        "https://images.unsplash.com/photo-1605647540924-852290f6b0d5?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80"
+      ],
+      "specifications": {
+        "Hamper": "6 Full Deluxe Festive Items in Velvet Box",
+        "Box": "Rigid magnetic closing gift box with gold foil lettering",
+        "Savings": "Save over 35% compared to purchasing individually",
+        "Ideal": "Diwali Home Makeover or Premium Corporate/Family Gifting"
+      },
+      "rating": 4.9,
+      "reviews_count": 65,
+      "created_at": "2026-10-10T10:00:00.000Z"
+    }
+  ],
+  "discounts": [
+    {
+      "id": "disc-001",
+      "code": "DIWALI15",
+      "type": "percentage",
+      "value": 15,
+      "min_cart_value": 999,
+      "max_discount_amount": 500,
+      "max_redemptions": 500,
+      "current_redemptions": 15,
+      "is_active": true,
+      "starts_at": "2026-10-01T00:00:00.000Z",
+      "expires_at": "2026-11-20T23:59:59.000Z",
+      "allow_combine": false,
+      "created_at": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "disc-002",
+      "code": "FESTIVE20",
+      "type": "percentage",
+      "value": 20,
+      "min_cart_value": 1499,
+      "max_discount_amount": 800,
+      "max_redemptions": 250,
+      "current_redemptions": 32,
+      "is_active": true,
+      "starts_at": "2026-10-01T00:00:00.000Z",
+      "expires_at": "2026-11-15T23:59:59.000Z",
+      "allow_combine": false,
+      "created_at": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "disc-003",
+      "code": "LIGHTS100",
+      "type": "fixed",
+      "value": 100,
+      "min_cart_value": 600,
+      "max_discount_amount": 100,
+      "max_redemptions": 100,
+      "current_redemptions": 9,
+      "is_active": true,
+      "starts_at": "2026-10-01T00:00:00.000Z",
+      "expires_at": "2026-11-30T23:59:59.000Z",
+      "allow_combine": true,
+      "created_at": "2026-10-01T00:00:00.000Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ord-mve8mol5-ow88",
+      "order_number": "DA-2026-6138",
+      "customer_name": "Aarav Patel",
+      "customer_email": "aarav.patel@testmail.com",
+      "customer_phone": "9876543210",
+      "shipping_address": "104, Royal Palms, Link Road",
+      "city": "Ahmedabad",
+      "state": "Gujarat",
+      "pin_code": "380015",
+      "payment_method": "cod",
+      "payment_status": "pending",
+      "order_status": "Shipped",
+      "subtotal": 1298,
+      "discount_amount": 194.7,
+      "coupon_code": "DIWALI15",
+      "shipping_fee": 0,
+      "total_amount": 1103.3,
+      "tracking_number": "BD-DIWALI-987654",
+      "courier_name": "Bluedart Express",
+      "notes": null,
+      "created_at": "2026-10-18T19:48:04.217Z",
+      "updated_at": "2026-10-18T19:48:04.414Z",
+      "items": [
+        {
+          "id": "item-mve8mol5-ua35",
+          "order_id": "ord-mve8mol5-ow88",
+          "product_id": "prod-001",
+          "product_name": "Premium LED Fairy String Lights",
+          "product_sku": "DA-LIGHT-001",
+          "product_image": "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80",
+          "unit_price": 649,
+          "quantity": 2,
+          "total_price": 1298
+        }
+      ]
+    }
+  ],
+  "reviews": [
+    {
+      "id": "rev-001",
+      "product_id": "prod-001",
+      "customer_name": "Priya Sharma",
+      "customer_email": "priya.s@example.com",
+      "rating": 5,
+      "title": "Mesmerizing glow, excellent quality!",
+      "comment": "The copper wire fairy lights look absolutely stunning wrapped around our balcony railing. The warm golden light creates such a serene festive vibe.",
+      "status": "approved",
+      "is_flagged": false,
+      "is_sample": false,
+      "admin_reply": "Thank you Priya ji! Wishing you and your family a luminous Diwali!",
+      "created_at": "2026-10-12T14:20:00.000Z"
+    },
+    {
+      "id": "rev-002",
+      "product_id": "prod-002",
+      "customer_name": "Rajesh Verma",
+      "customer_email": "rajesh.v@example.com",
+      "rating": 5,
+      "title": "Authentic heavy brass look",
+      "comment": "Impressed with the weight and detailing of the brass diyas. The oil holds for hours without spilling.",
+      "status": "approved",
+      "is_flagged": false,
+      "is_sample": false,
+      "created_at": "2026-10-13T09:15:00.000Z"
+    },
+    {
+      "id": "rev-mve8monm-d18b",
+      "product_id": "prod-001",
+      "customer_name": "Kavita Joshi",
+      "customer_email": "kavita@test.com",
+      "rating": 5,
+      "title": "Remarkable festival brightness!",
+      "comment": "Very pleased with the brightness and quality of these fairy lights for Diwali puja.",
+      "status": "pending",
+      "is_flagged": false,
+      "is_sample": false,
+      "admin_reply": null,
+      "created_at": "2026-10-18T19:48:04.306Z",
+      "updated_at": "2026-10-18T19:48:04.306Z"
+    }
+  ],
+  "faqs": [
+    {
+      "id": "faq-001",
+      "question": "How do I place an order on DeepAura?",
+      "answer": "Browse our festive collection, select your desired products and quantities, click \"Add to Cart\", and proceed to checkout.",
+      "category": "Ordering",
+      "sort_order": 1,
+      "is_active": true
+    },
+    {
+      "id": "faq-002",
+      "question": "What are your delivery timelines for Diwali?",
+      "answer": "Orders are dispatched within 24 hours of placement. Standard delivery takes 3 to 5 business days across major Indian metros.",
+      "category": "Shipping",
+      "sort_order": 2,
+      "is_active": true
+    },
+    {
+      "id": "faq-003",
+      "question": "Is Cash on Delivery (COD) available?",
+      "answer": "Yes! We offer Cash on Delivery for all serviceable PIN codes across India on orders up to ₹5,000.",
+      "category": "Payment",
+      "sort_order": 3,
+      "is_active": true
+    },
+    {
+      "id": "faq-004",
+      "question": "How do I apply a discount coupon?",
+      "answer": "In your Cart Drawer or at the Checkout page, enter your promotional coupon code (e.g. DIWALI15) in the \"Discount Code\" field and click Apply.",
+      "category": "Discounts",
+      "sort_order": 4,
+      "is_active": true
+    },
+    {
+      "id": "faq-005",
+      "question": "What is your return and replacement policy?",
+      "answer": "If any festive decor item arrives broken or defective due to transit, simply notify our customer support team within 48 hours for a free replacement.",
+      "category": "Returns",
+      "sort_order": 5,
+      "is_active": true
+    }
+  ],
+  "settings": {
+    "brand_name": "DeepAura — Diwali Decor",
+    "brand_tagline": "Light Up Every Corner of Your Celebration",
+    "logo_url": "/logo.svg",
+    "contact_email": "support@deepaura.com",
+    "contact_phone": "+91 98765 43210",
+    "contact_address": "DeepAura Festive Plaza, MG Road, Bengaluru, Karnataka 560001",
+    "announcement_text": "✨ Grand Diwali Celebration: Extra 15% OFF with code DIWALI15 | Free Express Delivery on orders above ₹999!",
+    "announcement_enabled": true,
+    "announcement_countdown_date": "2026-11-01T23:59:59",
+    "hero_heading": "Light Up Every Corner of Your Celebration",
+    "hero_subheading": "Bring home the glow, warmth and magic of Diwali with handcrafted brass diyas, luminous fairy lights, and divine home adornments.",
+    "hero_cta_primary_text": "Shop Festive Collection",
+    "hero_cta_primary_link": "#products",
+    "hero_cta_secondary_text": "Explore Bestsellers",
+    "hero_cta_secondary_link": "#featured",
+    "hero_image_url": "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=1600&q=80",
+    "hero_enabled": true,
+    "promo_banner_heading": "The Sacred Golden Diya Collection",
+    "promo_banner_description": "Elevate your puja altar with authentic cast brass diyas, lotus lamps and ceremonial accessories crafted by master Indian artisans.",
+    "promo_banner_coupon": "FESTIVE20",
+    "promo_banner_cta": "Claim 20% OFF",
+    "promo_banner_enabled": true,
+    "promo_banner_image": "https://images.unsplash.com/photo-1605647540924-852290f6b0d5?auto=format&fit=crop&w=1600&q=80",
+    "promo_start_date": "2026-10-01",
+    "promo_end_date": "2026-11-15",
+    "shipping_charge": 99,
+    "free_shipping_threshold": 999,
+    "cod_enabled": true,
+    "razorpay_enabled": false,
+    "tax_percentage": 0,
+    "currency": "INR",
+    "currency_symbol": "₹",
+    "maintenance_mode": false,
+    "policies": {
+      "shipping": "We ship across all 28 states and union territories in India. Standard delivery is 3-5 business days. Free shipping applies on all orders above ₹999.",
+      "returns": "We provide a 48-hour hassle-free damage replacement guarantee for transit-damaged festive fragile decor.",
+      "privacy": "Your contact details are strictly used for delivery updates and dispatch notices.",
+      "terms": "Items subject to festive season stock availability."
+    },
+    "social_links": {
+      "instagram": "https://instagram.com/deepauradecor",
+      "facebook": "https://facebook.com/deepauradecor",
+      "youtube": "https://youtube.com/@deepauradecor",
+      "whatsapp": "https://wa.me/919876543210"
+    },
+    "show_featured": true,
+    "show_promo_banner": true,
+    "show_reviews": true,
+    "show_faqs": true,
+    "show_benefits": true
+  },
+  "redemptions": [
+    {
+      "id": "red-mve8mol5",
+      "coupon_id": "disc-001",
+      "order_id": "ord-mve8mol5-ow88",
+      "customer_email": "aarav.patel@testmail.com",
+      "discount_amount": 194.7,
+      "redeemed_at": "2026-10-18T19:48:04.217Z"
+    }
+  ]
+}
