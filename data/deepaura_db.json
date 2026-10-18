@@ -53,7 +53,7 @@
       "price": 649,
       "original_price": 999,
       "sku": "DA-LIGHT-001",
-      "stock": 39,
+      "stock": 36,
       "category_id": "diwali-lights",
       "is_active": true,
       "is_featured": true,
@@ -72,7 +72,7 @@
       "rating": 4.8,
       "reviews_count": 38,
       "created_at": "2026-10-01T10:00:00.000Z",
-      "updated_at": "2026-10-18T20:12:03.802Z"
+      "updated_at": "2026-10-18T20:27:36.876Z"
     },
     {
       "id": "prod-002",
@@ -83,7 +83,7 @@
       "price": 899,
       "original_price": 1399,
       "sku": "DA-DIYA-002",
-      "stock": 27,
+      "stock": 26,
       "category_id": "diyas-lamps",
       "is_active": true,
       "is_featured": true,
@@ -102,7 +102,7 @@
       "rating": 4.9,
       "reviews_count": 52,
       "created_at": "2026-10-02T10:00:00.000Z",
-      "updated_at": "2026-10-18T20:12:03.802Z"
+      "updated_at": "2026-10-18T20:27:36.877Z"
     },
     {
       "id": "prod-003",
@@ -332,7 +332,7 @@
       "min_cart_value": 999,
       "max_discount_amount": 500,
       "max_redemptions": 500,
-      "current_redemptions": 16,
+      "current_redemptions": 17,
       "is_active": true,
       "starts_at": "2026-10-01T00:00:00.000Z",
       "expires_at": "2026-11-20T23:59:59.000Z",
@@ -660,6 +660,95 @@
           "total_price": 899
         }
       ]
+    },
+    {
+      "id": "ord-mvea1gux-4sjx",
+      "order_number": "DA-2026-4867",
+      "customer_name": "Aarav Patel",
+      "customer_email": "aarav.1792355253654@testmail.com",
+      "customer_phone": "9876543210",
+      "shipping_address": "101, Lotus Villa, Marine Drive",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pin_code": "400020",
+      "payment_method": "cod",
+      "payment_status": "pending",
+      "order_status": "Shipped",
+      "subtotal": 1298,
+      "discount_amount": 194.7,
+      "coupon_code": "DIWALI15",
+      "shipping_fee": 0,
+      "total_amount": 1103.3,
+      "tracking_number": "BD-DIWALI-987654",
+      "courier_name": "Bluedart Express",
+      "payment_id": null,
+      "utr": null,
+      "notes": null,
+      "created_at": "2026-10-18T20:27:33.657Z",
+      "updated_at": "2026-10-18T20:27:33.787Z",
+      "items": [
+        {
+          "id": "item-mvea1gux-hz2k",
+          "order_id": "ord-mvea1gux-4sjx",
+          "product_id": "prod-001",
+          "product_name": "Premium LED Fairy String Lights",
+          "product_sku": "DA-LIGHT-001",
+          "product_image": "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80",
+          "unit_price": 649,
+          "quantity": 2,
+          "total_price": 1298
+        }
+      ]
+    },
+    {
+      "id": "ord-mvea1jcd-bkw8",
+      "order_number": "DA-2026-4990",
+      "customer_name": "Ananya Sharma",
+      "customer_email": "ananya.sharma@festivetest.in",
+      "customer_phone": "9876501234",
+      "shipping_address": "Flat 301, Diya Heights, Baner Road",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "pin_code": "411045",
+      "payment_method": "youpi",
+      "payment_status": "paid",
+      "order_status": "Confirmed",
+      "subtotal": 1548,
+      "discount_amount": 0,
+      "coupon_code": null,
+      "shipping_fee": 0,
+      "total_amount": 1548,
+      "tracking_number": null,
+      "courier_name": null,
+      "payment_id": "yp_pay_test_001",
+      "utr": "UTR_TEST_99887766",
+      "notes": "Please pack in festive gift wrapping | Verified via YouPI-PG Webhook (Amount: ₹1548, UTR: UTR_TEST_99887766)",
+      "created_at": "2026-10-18T20:27:36.877Z",
+      "updated_at": "2026-10-18T20:27:36.902Z",
+      "items": [
+        {
+          "id": "item-mvea1jcc-my2j",
+          "order_id": "ord-mvea1jcd-bkw8",
+          "product_id": "prod-001",
+          "product_name": "Premium LED Fairy String Lights",
+          "product_sku": "DA-LIGHT-001",
+          "product_image": "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80",
+          "unit_price": 649,
+          "quantity": 1,
+          "total_price": 649
+        },
+        {
+          "id": "item-mvea1jcc-bgvl",
+          "order_id": "ord-mvea1jcd-bkw8",
+          "product_id": "prod-002",
+          "product_name": "Decorative Brass-Style Diya Set",
+          "product_sku": "DA-DIYA-002",
+          "product_image": "/uploads/product-1792353608354-jlui5r.png",
+          "unit_price": 899,
+          "quantity": 1,
+          "total_price": 899
+        }
+      ]
     }
   ],
   "reviews": [
@@ -719,6 +808,21 @@
       "admin_reply": null,
       "created_at": "2026-10-18T20:11:55.087Z",
       "updated_at": "2026-10-18T20:11:55.087Z"
+    },
+    {
+      "id": "rev-mvea1gvh-z23i",
+      "product_id": "prod-001",
+      "customer_name": "Pooja Hegde",
+      "customer_email": "pooja@example.com",
+      "rating": 5,
+      "title": "Divine Festive Glow",
+      "comment": "The copper fairy lights gave an absolutely mesmerizing aura to our living room balcony.",
+      "status": "pending",
+      "is_flagged": false,
+      "is_sample": false,
+      "admin_reply": null,
+      "created_at": "2026-10-18T20:27:33.677Z",
+      "updated_at": "2026-10-18T20:27:33.677Z"
     }
   ],
   "faqs": [
@@ -793,6 +897,15 @@
     "free_shipping_threshold": 999,
     "cod_enabled": true,
     "razorpay_enabled": false,
+    "upi_gateway_enabled": true,
+    "upi_vpa": "deepaura@upi",
+    "upi_merchant_name": "DeepAura Diwali Decor",
+    "upi_secondary_vpas": [
+      "deepaura@okhdfcbank",
+      "deepaura@paytm"
+    ],
+    "upi_qr_image_url": null,
+    "upi_instructions": "Scan the QR code using Google Pay, PhonePe, Paytm, CRED or any UPI app. Complete payment and enter the 12-digit UTR/Reference number below to confirm your order.",
     "youpi_enabled": true,
     "youpi_gateway_url": "http://localhost:7000",
     "youpi_merchant_key": "yp_live_deepaura_diwali2026",
@@ -844,6 +957,14 @@
       "customer_email": "aarav.1792354315075@testmail.com",
       "discount_amount": 194.7,
       "redeemed_at": "2026-10-18T20:11:55.076Z"
+    },
+    {
+      "id": "red-mvea1gux",
+      "coupon_id": "disc-001",
+      "order_id": "ord-mvea1gux-4sjx",
+      "customer_email": "aarav.1792355253654@testmail.com",
+      "discount_amount": 194.7,
+      "redeemed_at": "2026-10-18T20:27:33.657Z"
     }
   ]
 }

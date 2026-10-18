@@ -14,6 +14,7 @@ import {
   Upload,
   Star,
   Sparkles,
+  Image as ImageIcon,
 } from 'lucide-react';
 
 export default function AdminProductsPage() {
@@ -26,6 +27,7 @@ export default function AdminProductsPage() {
   const [isNew, setIsNew] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [newImageUrl, setNewImageUrl] = useState('');
 
   const fetchProducts = async () => {
     try {
@@ -94,13 +96,34 @@ export default function AdminProductsPage() {
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const getProductImages = (prod: Partial<Product> | null): string[] => {
+    if (!prod) return [];
+    const list = [prod.image_url, ...(prod.additional_images || [])].filter(Boolean) as string[];
+    return Array.from(new Set(list));
+  };
 
+  const handleMultiImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!editingProduct) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const current = getProductImages(editingProduct);
+    const availableSlots = 10 - current.length;
+
+    if (availableSlots <= 0) {
+      setAlertMsg({
+        type: 'error',
+        text: 'Maximum 10 images already reached for this product. Please remove an image first to upload more.',
+      });
+      return;
+    }
+
+    const filesArray = Array.from(files).slice(0, availableSlots);
     setUploadingImage(true);
+
     const formData = new FormData();
-    formData.append('file', file);
+    filesArray.forEach((f) => formData.append('files', f));
+    formData.append('type', 'product');
 
     try {
       const res = await fetch('/api/admin/upload', {
@@ -108,17 +131,72 @@ export default function AdminProductsPage() {
         body: formData,
       });
       const data = await res.json();
-      if (res.ok && data.url) {
-        setEditingProduct((prev) => ({ ...prev, image_url: data.url }));
-        setAlertMsg({ type: 'success', text: 'Image uploaded successfully!' });
+      if (res.ok && data.urls && data.urls.length > 0) {
+        const merged = [...current, ...data.urls].slice(0, 10);
+        setEditingProduct((prev) => ({
+          ...prev,
+          image_url: merged[0] || '',
+          additional_images: merged.slice(1),
+        }));
+        setAlertMsg({
+          type: 'success',
+          text: `Uploaded ${data.urls.length} image(s)! Total: ${merged.length} / 10 images.`,
+        });
       } else {
         setAlertMsg({ type: 'error', text: data.error || 'Image upload failed.' });
       }
     } catch (err) {
-      setAlertMsg({ type: 'error', text: 'Network error uploading image.' });
+      setAlertMsg({ type: 'error', text: 'Network error uploading images.' });
     } finally {
       setUploadingImage(false);
+      e.target.value = '';
     }
+  };
+
+  const handleAddImageUrl = () => {
+    if (!editingProduct || !newImageUrl.trim()) return;
+    const url = newImageUrl.trim();
+    const current = getProductImages(editingProduct);
+    if (current.length >= 10) {
+      setAlertMsg({ type: 'error', text: 'Maximum 10 images limit reached.' });
+      return;
+    }
+    if (current.includes(url)) {
+      setAlertMsg({ type: 'error', text: 'This image URL is already in the gallery.' });
+      return;
+    }
+    const merged = [...current, url];
+    setEditingProduct((prev) => ({
+      ...prev,
+      image_url: merged[0],
+      additional_images: merged.slice(1),
+    }));
+    setNewImageUrl('');
+  };
+
+  const handleSetCoverImage = (index: number) => {
+    if (!editingProduct) return;
+    const current = getProductImages(editingProduct);
+    if (index === 0 || index >= current.length) return;
+    const selected = current[index];
+    const remaining = current.filter((_, i) => i !== index);
+    const reordered = [selected, ...remaining];
+    setEditingProduct((prev) => ({
+      ...prev,
+      image_url: reordered[0],
+      additional_images: reordered.slice(1),
+    }));
+  };
+
+  const handleRemoveProductImage = (index: number) => {
+    if (!editingProduct) return;
+    const current = getProductImages(editingProduct);
+    const filtered = current.filter((_, i) => i !== index);
+    setEditingProduct((prev) => ({
+      ...prev,
+      image_url: filtered[0] || '',
+      additional_images: filtered.slice(1),
+    }));
   };
 
   const handleSaveProduct = async (e: React.FormEvent) => {
@@ -501,40 +579,117 @@ export default function AdminProductsPage() {
                 </div>
               </div>
 
-              {/* Image URL & Upload */}
-              <div>
-                <label className="block text-xs font-semibold text-stone-700 mb-1">
-                  Product Image URL or Upload File *
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    required
-                    value={editingProduct.image_url || ''}
-                    onChange={(e) =>
-                      setEditingProduct({
-                        ...editingProduct,
-                        image_url: e.target.value,
-                      })
-                    }
-                    placeholder="https://images.unsplash.com/... or /uploads/..."
-                    className="flex-1 bg-ivory-50 border border-gold-300 rounded-xl px-3.5 py-2 text-xs text-stone-900 focus:outline-none focus:ring-1 focus:ring-gold-500"
-                  />
-                  <label className="px-4 py-2 bg-stone-100 hover:bg-gold-100 text-stone-700 rounded-xl text-xs font-semibold cursor-pointer border border-gold-300 flex items-center gap-1.5 transition-colors">
+              {/* Product Photo Gallery (Up to 10 Images • PNG & JPG Mix) */}
+              <div className="p-4 rounded-2xl bg-ivory-50/80 border border-gold-300 space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <label className="block text-xs font-bold text-maroon-950">
+                      Product Photo Gallery (Up to 10 Images) *
+                    </label>
+                    <span className="text-[10px] text-stone-500 block">
+                      Mix PNG and JPG images freely. First image serves as the Main Storefront Cover.
+                    </span>
+                  </div>
+                  
+                  <span className={`text-xs font-bold px-2.5 py-1 rounded-full self-start sm:self-auto ${
+                    getProductImages(editingProduct).length >= 10
+                      ? 'bg-amber-100 text-amber-900 border border-amber-300'
+                      : 'bg-gold-100 text-maroon-900 border border-gold-300'
+                  }`}>
+                    {getProductImages(editingProduct).length} / 10 Images Added
+                  </span>
+                </div>
+
+                {/* Upload Buttons & URL Input */}
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <div className="flex-1 flex gap-2">
+                    <input
+                      type="url"
+                      placeholder="Paste image URL (https://... or /uploads/...)"
+                      value={newImageUrl}
+                      onChange={(e) => setNewImageUrl(e.target.value)}
+                      className="flex-1 bg-white border border-gold-300 rounded-xl px-3 py-2 text-xs text-stone-900 focus:outline-none focus:ring-1 focus:ring-gold-500"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddImageUrl}
+                      disabled={!newImageUrl.trim() || getProductImages(editingProduct).length >= 10}
+                      className="px-3 py-2 bg-stone-800 text-gold-100 rounded-xl text-xs font-semibold hover:bg-maroon-900 transition-colors disabled:opacity-40"
+                    >
+                      Add URL
+                    </button>
+                  </div>
+
+                  <label className="px-4 py-2 bg-maroon-900 hover:bg-maroon-800 text-gold-100 rounded-xl text-xs font-bold cursor-pointer transition-colors flex items-center justify-center gap-1.5 shadow-sm shrink-0">
                     <Upload className="w-3.5 h-3.5" />
-                    <span>{uploadingImage ? 'Uploading...' : 'Upload'}</span>
+                    <span>{uploadingImage ? 'Uploading...' : 'Upload PNG / JPG Images'}</span>
                     <input
                       type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
+                      multiple
+                      accept="image/png, image/jpeg, image/jpg, image/webp"
+                      onChange={handleMultiImageUpload}
+                      disabled={uploadingImage || getProductImages(editingProduct).length >= 10}
                       className="hidden"
                     />
                   </label>
                 </div>
 
-                {editingProduct.image_url && (
-                  <div className="mt-2 relative w-16 h-16 rounded-xl overflow-hidden border border-gold-300">
-                    <Image src={editingProduct.image_url} alt="Preview" fill className="object-cover" />
+                {/* Image Grid Preview */}
+                {getProductImages(editingProduct).length > 0 ? (
+                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2">
+                    {getProductImages(editingProduct).map((imgUrl, idx) => (
+                      <div
+                        key={idx}
+                        className={`relative group rounded-xl overflow-hidden border-2 aspect-square bg-white shadow-sm transition-all ${
+                          idx === 0
+                            ? 'border-maroon-900 ring-2 ring-gold-400'
+                            : 'border-gold-200 hover:border-gold-400'
+                        }`}
+                      >
+                        <Image
+                          src={imgUrl}
+                          alt={`Product Image ${idx + 1}`}
+                          fill
+                          className="object-cover"
+                        />
+
+                        {/* Top Badge: Main Cover */}
+                        {idx === 0 ? (
+                          <div className="absolute top-1.5 left-1.5 z-10">
+                            <span className="px-1.5 py-0.5 rounded-full bg-maroon-900 text-gold-200 text-[9px] font-bold shadow">
+                              ★ Main Cover
+                            </span>
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => handleSetCoverImage(idx)}
+                            title="Set as Main Cover Image"
+                            className="absolute top-1.5 left-1.5 z-10 px-1.5 py-0.5 rounded bg-black/60 hover:bg-maroon-900 text-gold-100 text-[9px] font-semibold opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            Set Main
+                          </button>
+                        )}
+
+                        {/* Delete Button */}
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveProductImage(idx)}
+                          title="Delete this image"
+                          className="absolute top-1.5 right-1.5 z-10 p-1 rounded-full bg-rose-600/90 hover:bg-rose-700 text-white shadow opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </button>
+
+                        <div className="absolute bottom-1 right-1.5 z-10 text-[9px] font-mono text-white/90 bg-black/50 px-1 rounded">
+                          #{idx + 1}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="py-6 text-center text-xs text-stone-400 border-2 border-dashed border-gold-300 rounded-xl bg-white/60">
+                    No images added yet. Click &quot;Upload PNG / JPG Images&quot; or paste an image URL above (up to 10 images).
                   </div>
                 )}
               </div>

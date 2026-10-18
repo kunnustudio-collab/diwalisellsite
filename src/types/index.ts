@@ -187,6 +187,12 @@ export interface SiteSettings {
   free_shipping_threshold: number;
   cod_enabled: boolean;
   razorpay_enabled: boolean;
+  upi_gateway_enabled: boolean;
+  upi_vpa: string;
+  upi_merchant_name: string;
+  upi_secondary_vpas?: string[];
+  upi_qr_image_url?: string | null;
+  upi_instructions?: string;
   youpi_enabled: boolean;
   youpi_gateway_url?: string;
   youpi_merchant_key?: string;

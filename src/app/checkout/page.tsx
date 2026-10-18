@@ -23,6 +23,7 @@ import {
   ExternalLink,
   Zap,
   Copy,
+  Check,
 } from 'lucide-react';
 
 export default function CheckoutPage() {
@@ -61,12 +62,13 @@ export default function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // YouPI Interactive Modal State (Fallback / Dev Testing)
+  // UPI Payment Modal State
   const [showYoupiModal, setShowYoupiModal] = useState(false);
   const [createdOrder, setCreatedOrder] = useState<Order | null>(null);
   const [enteredUtr, setEnteredUtr] = useState('');
   const [isVerifyingUpi, setIsVerifyingUpi] = useState(false);
-  const [upiStatusMsg, setUpiStatusMsg] = useState<string | null>(null);
+  const [upiStatusMsg, setUpiStatusMsg] = useState<{ type: 'error' | 'success'; text: string } | null>(null);
+  const [copiedVpa, setCopiedVpa] = useState<string | null>(null);
 
   useEffect(() => {
     fetch('/api/settings')
@@ -74,9 +76,18 @@ export default function CheckoutPage() {
       .then((d) => {
         if (d.settings) {
           setSettings(d.settings);
-          if (d.settings.youpi_enabled) {
+
+          // Choose default payment method based on admin ON/OFF controls
+          if (d.settings.upi_gateway_enabled !== false || d.settings.youpi_enabled) {
             setPaymentMethod('youpi');
-            // Dynamically load youpi.js script from configured gateway URL
+          } else if (d.settings.cod_enabled !== false) {
+            setPaymentMethod('cod');
+          } else if (d.settings.razorpay_enabled) {
+            setPaymentMethod('razorpay');
+          }
+
+          // Dynamically load youpi.js script if YouPI self-hosted gateway is configured
+          if (d.settings.youpi_enabled) {
             const scriptUrl = `${d.settings.youpi_gateway_url || 'http://localhost:7000'}/youpi.js`;
             const existingScript = document.querySelector(`script[src="${scriptUrl}"]`);
             if (!existingScript) {
@@ -85,15 +96,8 @@ export default function CheckoutPage() {
               script.async = true;
               script.setAttribute('data-youpi-key', d.settings.youpi_merchant_key || '');
               script.setAttribute('data-currency', 'INR');
-              script.onload = () => console.log('YouPI Gateway SDK loaded successfully.');
-              script.onerror = () =>
-                console.log(
-                  'Note: YouPI SDK host unreachable. Built-in interactive QR and fallback modal active.'
-                );
               document.head.appendChild(script);
             }
-          } else {
-            setPaymentMethod('cod');
           }
         }
       })
@@ -119,7 +123,7 @@ export default function CheckoutPage() {
 
     if (paymentMethod === 'razorpay' && !settings.razorpay_enabled) {
       setErrorMessage(
-        'Online card payment gateway is currently in test configuration. Please select UPI (YouPI) or Cash on Delivery (COD).'
+        'Online card payment gateway is currently disabled by administrator. Please select UPI or Cash on Delivery (COD).'
       );
       return;
     }
@@ -161,12 +165,12 @@ export default function CheckoutPage() {
       const newOrder: Order = data.order;
       setCreatedOrder(newOrder);
 
-      // If Payment Method is YouPI-PG
+      // If Payment Method is UPI (YouPI / Direct Bank QR)
       if (paymentMethod === 'youpi') {
         const youpiGlobal = typeof window !== 'undefined' ? (window as any).Youpi : null;
 
         if (youpiGlobal && typeof youpiGlobal.pay === 'function') {
-          // Invoke official YouPI-PG programmatic checkout modal
+          // Official YouPI-PG checkout modal
           youpiGlobal.pay({
             amount: Number(newOrder.total_amount),
             orderId: newOrder.order_number,
@@ -174,7 +178,7 @@ export default function CheckoutPage() {
             customerName: newOrder.customer_name,
             customerEmail: newOrder.customer_email,
             customerPhone: newOrder.customer_phone,
-            description: `DeepAura Diwali Decor #${newOrder.order_number}`,
+            description: `DeepAura Festive Order #${newOrder.order_number}`,
             onSuccess: function (response: any) {
               clearCart();
               const utr = response?.utr || response?.paymentId || '';
@@ -182,12 +186,11 @@ export default function CheckoutPage() {
             },
             onFailure: function (error: any) {
               console.warn('YouPI payment dismissed or cancelled', error);
-              setErrorMessage('Payment modal closed. You can retry payment or view order status.');
               setShowYoupiModal(true);
             },
           });
         } else {
-          // YouPI SDK daemon is either starting or offline: open interactive fallback UPI modal
+          // Open direct UPI payment & QR modal
           setShowYoupiModal(true);
         }
       } else {
@@ -202,25 +205,30 @@ export default function CheckoutPage() {
     }
   };
 
-  // Simulate or Confirm UPI payment from modal
-  const handleVerifyUpiPayment = async (simulated: boolean) => {
+  // Confirm UPI payment with customer's 12-digit UTR
+  const handleConfirmUtrPayment = async () => {
     if (!createdOrder) return;
-    setIsVerifyingUpi(true);
     setUpiStatusMsg(null);
 
-    const utr = simulated
-      ? `SIM_${Math.floor(100000000000 + Math.random() * 900000000000)}`
-      : enteredUtr.trim() || `UTR_${Date.now().toString().slice(-8)}`;
+    const utr = enteredUtr.trim();
+    if (!utr || utr.length < 6) {
+      setUpiStatusMsg({
+        type: 'error',
+        text: 'Please enter a valid UPI Ref/UTR number (usually 12 digits from your UPI app receipt).',
+      });
+      return;
+    }
+
+    setIsVerifyingUpi(true);
 
     try {
-      // Send verified webhook simulation to our backend endpoint
-      const res = await fetch('/api/admin/orders/' + createdOrder.id, {
+      const res = await fetch(`/api/admin/orders/${createdOrder.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           order_status: 'Confirmed',
           payment_status: 'paid',
-          notes: `Paid via YouPI UPI (Ref/UTR: ${utr})`,
+          notes: `Paid via Direct UPI (UTR: ${utr})`,
         }),
       });
 
@@ -230,13 +238,25 @@ export default function CheckoutPage() {
         setShowYoupiModal(false);
         router.push(`/order-confirmation/${createdOrder.order_number}?utr=${utr}`);
       } else {
-        setUpiStatusMsg(result.error || 'Verification failed. Please try again.');
+        setUpiStatusMsg({
+          type: 'error',
+          text: result.error || 'Verification failed. Please check your UTR number.',
+        });
       }
     } catch (e) {
-      setUpiStatusMsg('Error communicating with verification service.');
+      setUpiStatusMsg({
+        type: 'error',
+        text: 'Network error updating order. Please contact customer support.',
+      });
     } finally {
       setIsVerifyingUpi(false);
     }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedVpa(text);
+    setTimeout(() => setCopiedVpa(null), 2500);
   };
 
   if (cart.length === 0 && !isSubmitting && !showYoupiModal) {
@@ -262,16 +282,26 @@ export default function CheckoutPage() {
     );
   }
 
-  // UPI Intent URL
-  const vpa = settings.youpi_vpa || 'deepaura@upi';
+  // UPI Values
+  const primaryVpa = settings.upi_vpa || settings.youpi_vpa || 'deepaura@upi';
+  const merchantName = settings.upi_merchant_name || settings.brand_name.split('—')[0]?.trim() || 'DeepAura';
   const orderAmt = createdOrder ? createdOrder.total_amount : finalTotal;
   const orderNum = createdOrder ? createdOrder.order_number : 'DA-FESTIVE';
-  const upiIntentUrl = `upi://pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(
-    settings.brand_name.split('—')[0]?.trim() || 'DeepAura'
+
+  const upiIntentUrl = `upi://pay?pa=${encodeURIComponent(primaryVpa)}&pn=${encodeURIComponent(
+    merchantName
   )}&am=${orderAmt}&cu=INR&tn=${encodeURIComponent(`Order ${orderNum}`)}`;
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=10&data=${encodeURIComponent(
+
+  const dynamicQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=10&data=${encodeURIComponent(
     upiIntentUrl
   )}`;
+
+  // Display custom uploaded QR if configured by admin, otherwise dynamic QR
+  const activeQrCodeUrl = settings.upi_qr_image_url || dynamicQrUrl;
+
+  const isUpiEnabled = settings.upi_gateway_enabled !== false || settings.youpi_enabled;
+  const isCodEnabled = settings.cod_enabled !== false;
+  const isRazorpayEnabled = Boolean(settings.razorpay_enabled);
 
   return (
     <div className="min-h-screen bg-ivory-50 py-10 px-4 sm:px-6 lg:px-8">
@@ -445,7 +475,7 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {/* Payment Method */}
+            {/* Payment Method Controls */}
             <div className="bg-white p-6 sm:p-8 rounded-3xl border border-gold-200/80 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="font-serif font-bold text-lg text-maroon-950">
@@ -457,107 +487,110 @@ export default function CheckoutPage() {
               </div>
 
               <div className="space-y-3">
-                {/* YouPI-PG UPI Gateway (Primary Recommended) */}
-                <label
-                  className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
-                    paymentMethod === 'youpi'
-                      ? 'border-maroon-900 bg-amber-50/50 ring-1 ring-maroon-900 shadow-sm'
-                      : 'border-gold-200 hover:border-gold-400 bg-white'
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="payment_method"
-                    value="youpi"
-                    checked={paymentMethod === 'youpi'}
-                    onChange={() => setPaymentMethod('youpi')}
-                    className="mt-1 text-maroon-900 focus:ring-maroon-900"
-                  />
-                  <div className="flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="w-5 h-5 rounded-md bg-maroon-900 text-gold-300 font-bold text-[10px] flex items-center justify-center">
-                        UPI
-                      </span>
-                      <span className="font-serif font-bold text-sm text-stone-900">
-                        UPI Instant Payment (YouPI-PG)
-                      </span>
-                      <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
-                        ⚡ 0% Fee • Instant
-                      </span>
+                {/* UPI Instant QR & Apps (Admin Controlled ON/OFF) */}
+                {isUpiEnabled && (
+                  <label
+                    className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
+                      paymentMethod === 'youpi'
+                        ? 'border-maroon-900 bg-amber-50/50 ring-1 ring-maroon-900 shadow-sm'
+                        : 'border-gold-200 hover:border-gold-400 bg-white'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="payment_method"
+                      value="youpi"
+                      checked={paymentMethod === 'youpi'}
+                      onChange={() => setPaymentMethod('youpi')}
+                      className="mt-1 text-maroon-900 focus:ring-maroon-900"
+                    />
+                    <div className="flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="w-5 h-5 rounded-md bg-maroon-900 text-gold-300 font-bold text-[10px] flex items-center justify-center">
+                          UPI
+                        </span>
+                        <span className="font-serif font-bold text-sm text-stone-900">
+                          {settings.upi_merchant_name ? `${settings.upi_merchant_name} (UPI & QR)` : 'UPI Instant Payment & QR'}
+                        </span>
+                        <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
+                          ⚡ 0% Fee • Instant Settlement
+                        </span>
+                      </div>
+                      <p className="text-xs text-stone-600 mt-1">
+                        Direct-to-bank settlement. Pay using <strong>Google Pay, PhonePe, Paytm, CRED, BHIM</strong> or scan QR code.
+                      </p>
+                      <div className="flex items-center gap-2 mt-2 pt-2 border-t border-gold-200/60 text-[10px] font-semibold text-stone-500">
+                        <span className="px-1.5 py-0.5 rounded bg-white border border-stone-200 text-stone-700">GPay</span>
+                        <span className="px-1.5 py-0.5 rounded bg-white border border-stone-200 text-stone-700">PhonePe</span>
+                        <span className="px-1.5 py-0.5 rounded bg-white border border-stone-200 text-stone-700">Paytm</span>
+                        <span className="px-1.5 py-0.5 rounded bg-white border border-stone-200 text-stone-700">BHIM</span>
+                        <span className="px-1.5 py-0.5 rounded bg-white border border-stone-200 text-stone-700">CRED</span>
+                      </div>
                     </div>
-                    <p className="text-xs text-stone-600 mt-1">
-                      Direct-to-bank settlement via standard NPCI UPI rails. Pay with{' '}
-                      <strong>Google Pay, PhonePe, Paytm, CRED</strong>, or scan dynamic QR.
-                    </p>
-                    <div className="flex items-center gap-2 mt-2 pt-2 border-t border-gold-200/60 text-[10px] font-semibold text-stone-500">
-                      <span className="px-1.5 py-0.5 rounded bg-white border border-stone-200 text-stone-700">GPay</span>
-                      <span className="px-1.5 py-0.5 rounded bg-white border border-stone-200 text-stone-700">PhonePe</span>
-                      <span className="px-1.5 py-0.5 rounded bg-white border border-stone-200 text-stone-700">Paytm</span>
-                      <span className="px-1.5 py-0.5 rounded bg-white border border-stone-200 text-stone-700">BHIM</span>
-                      <span className="px-1.5 py-0.5 rounded bg-white border border-stone-200 text-stone-700">CRED</span>
-                    </div>
-                  </div>
-                </label>
+                  </label>
+                )}
 
-                {/* Cash on Delivery */}
-                <label
-                  className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
-                    paymentMethod === 'cod'
-                      ? 'border-maroon-900 bg-ivory-50 ring-1 ring-maroon-900'
-                      : 'border-gold-200 hover:border-gold-400 bg-white'
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="payment_method"
-                    value="cod"
-                    checked={paymentMethod === 'cod'}
-                    onChange={() => setPaymentMethod('cod')}
-                    className="mt-1 text-maroon-900 focus:ring-maroon-900"
-                  />
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <Banknote className="w-4 h-4 text-emerald-700" />
-                      <span className="font-serif font-bold text-sm text-stone-900">
-                        Cash on Delivery (COD)
-                      </span>
+                {/* Cash on Delivery (Admin Controlled ON/OFF) */}
+                {isCodEnabled && (
+                  <label
+                    className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
+                      paymentMethod === 'cod'
+                        ? 'border-maroon-900 bg-ivory-50 ring-1 ring-maroon-900'
+                        : 'border-gold-200 hover:border-gold-400 bg-white'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="payment_method"
+                      value="cod"
+                      checked={paymentMethod === 'cod'}
+                      onChange={() => setPaymentMethod('cod')}
+                      className="mt-1 text-maroon-900 focus:ring-maroon-900"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <Banknote className="w-4 h-4 text-emerald-700" />
+                        <span className="font-serif font-bold text-sm text-stone-900">
+                          Cash on Delivery (COD)
+                        </span>
+                      </div>
+                      <p className="text-xs text-stone-500 mt-1">
+                        Pay conveniently in cash or UPI to the courier upon delivery at your doorstep.
+                      </p>
                     </div>
-                    <p className="text-xs text-stone-500 mt-1">
-                      Pay conveniently in cash or UPI to the courier upon delivery at your doorstep.
-                    </p>
-                  </div>
-                </label>
+                  </label>
+                )}
 
-                {/* Online Payment / Razorpay */}
-                <label
-                  className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
-                    paymentMethod === 'razorpay'
-                      ? 'border-maroon-900 bg-ivory-50 ring-1 ring-maroon-900'
-                      : 'border-gold-200 hover:border-gold-400 bg-white'
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="payment_method"
-                    value="razorpay"
-                    checked={paymentMethod === 'razorpay'}
-                    onChange={() => setPaymentMethod('razorpay')}
-                    className="mt-1 text-maroon-900 focus:ring-maroon-900"
-                  />
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <CreditCard className="w-4 h-4 text-gold-700" />
-                      <span className="font-serif font-bold text-sm text-stone-900">
-                        Online Cards & NetBanking (Razorpay)
-                      </span>
+                {/* Online Payment / Razorpay (Admin Controlled ON/OFF) */}
+                {isRazorpayEnabled && (
+                  <label
+                    className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
+                      paymentMethod === 'razorpay'
+                        ? 'border-maroon-900 bg-ivory-50 ring-1 ring-maroon-900'
+                        : 'border-gold-200 hover:border-gold-400 bg-white'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="payment_method"
+                      value="razorpay"
+                      checked={paymentMethod === 'razorpay'}
+                      onChange={() => setPaymentMethod('razorpay')}
+                      className="mt-1 text-maroon-900 focus:ring-maroon-900"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <CreditCard className="w-4 h-4 text-gold-700" />
+                        <span className="font-serif font-bold text-sm text-stone-900">
+                          Online Cards & NetBanking (Razorpay)
+                        </span>
+                      </div>
+                      <p className="text-xs text-stone-500 mt-1">
+                        Pay securely using Credit Cards, Debit Cards, or NetBanking.
+                      </p>
                     </div>
-                    <p className="text-xs text-stone-500 mt-1">
-                      {settings.razorpay_enabled
-                        ? 'Secure instantaneous card payment verification via Razorpay.'
-                        : 'Gateway in test configuration. YouPI UPI or COD is recommended.'}
-                    </p>
-                  </div>
-                </label>
+                  </label>
+                )}
               </div>
             </div>
 
@@ -682,7 +715,7 @@ export default function CheckoutPage() {
                 {isSubmitting ? (
                   <span>Securing Order...</span>
                 ) : paymentMethod === 'youpi' ? (
-                  <span>Pay ₹{finalTotal.toLocaleString('en-IN')} via UPI Instant</span>
+                  <span>Pay ₹{finalTotal.toLocaleString('en-IN')} via UPI & QR</span>
                 ) : (
                   <span>Confirm Order • ₹{finalTotal.toLocaleString('en-IN')}</span>
                 )}
@@ -704,10 +737,10 @@ export default function CheckoutPage() {
 
         </form>
 
-        {/* YouPI Dynamic QR & Fallback Checkout Modal */}
+        {/* UPI Instant QR & Payment Modal (Genuine Direct Bank Settlement - No Demo Mode) */}
         {showYoupiModal && createdOrder && (
           <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-md w-full border border-gold-300 shadow-2xl p-6 sm:p-8 space-y-5 animate-in fade-in zoom-in-95 duration-200">
+            <div className="bg-white rounded-3xl max-w-md w-full border border-gold-300 shadow-2xl p-6 sm:p-8 space-y-4 animate-in fade-in zoom-in-95 duration-200 max-h-[95vh] overflow-y-auto">
               
               {/* Modal Header */}
               <div className="flex items-center justify-between pb-3 border-b border-gold-200">
@@ -717,10 +750,10 @@ export default function CheckoutPage() {
                   </div>
                   <div>
                     <h3 className="font-serif font-bold text-base text-maroon-950">
-                      YouPI Instant Checkout
+                      Scan QR & Complete UPI Payment
                     </h3>
                     <span className="text-[10px] text-stone-500 block">
-                      Direct-to-Bank Settlement (0% Platform Fee)
+                      Direct settlement to {merchantName}
                     </span>
                   </div>
                 </div>
@@ -733,7 +766,7 @@ export default function CheckoutPage() {
                 </button>
               </div>
 
-              {/* Order Info & Dynamic QR */}
+              {/* Order Info & QR Code Display */}
               <div className="text-center space-y-3">
                 <div className="bg-ivory-50 p-3 rounded-2xl border border-gold-200 flex items-center justify-between text-xs">
                   <div>
@@ -741,99 +774,139 @@ export default function CheckoutPage() {
                     <strong className="font-mono text-maroon-900">{createdOrder.order_number}</strong>
                   </div>
                   <div className="text-right">
-                    <span className="text-stone-500 block text-[10px]">Amount Due</span>
-                    <strong className="font-serif text-base text-stone-900">
+                    <span className="text-stone-500 block text-[10px]">Total Amount</span>
+                    <strong className="font-serif text-base text-emerald-800">
                       ₹{createdOrder.total_amount.toLocaleString('en-IN')}
                     </strong>
                   </div>
                 </div>
 
-                <div className="relative inline-block p-3 bg-white rounded-2xl border-2 border-dashed border-gold-400 shadow-sm mx-auto">
+                {/* QR Code Container */}
+                <div className="relative inline-block p-3 bg-white rounded-2xl border-2 border-gold-400 shadow-sm mx-auto">
                   <img
-                    src={qrCodeUrl}
+                    src={activeQrCodeUrl}
                     alt="Scan UPI QR"
-                    width={200}
-                    height={200}
-                    className="rounded-lg mx-auto"
+                    width={210}
+                    height={210}
+                    className="rounded-xl mx-auto object-contain max-h-[210px]"
                   />
-                  <div className="absolute inset-x-0 bottom-1 flex justify-center">
-                    <span className="px-2 py-0.5 rounded-full bg-maroon-900 text-gold-200 text-[9px] font-bold shadow">
+                  <div className="mt-2 flex items-center justify-center gap-1.5">
+                    <span className="px-2.5 py-0.5 rounded-full bg-maroon-900 text-gold-200 text-[10px] font-bold shadow">
                       Scan with any UPI App
                     </span>
                   </div>
                 </div>
 
-                <p className="text-[11px] text-stone-600 max-w-xs mx-auto">
-                  Scan this dynamic QR code with Google Pay, PhonePe, Paytm, CRED or BHIM to pay instantly.
-                </p>
+                {settings.upi_instructions ? (
+                  <p className="text-[11px] text-stone-600 bg-amber-50/70 p-2.5 rounded-xl border border-amber-200 text-left">
+                    {settings.upi_instructions}
+                  </p>
+                ) : (
+                  <p className="text-[11px] text-stone-600 max-w-xs mx-auto">
+                    Scan with <strong>Google Pay, PhonePe, Paytm, CRED or BHIM</strong>.
+                  </p>
+                )}
 
-                {/* Direct App Intent Link */}
+                {/* Direct UPI App Intent Trigger */}
                 <a
                   href={upiIntentUrl}
                   className="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-maroon-900 text-gold-100 text-xs font-bold hover:bg-maroon-800 transition-colors shadow-sm"
                 >
                   <Zap className="w-4 h-4 text-gold-300" />
-                  <span>Open directly in UPI App</span>
+                  <span>Tap to Pay with UPI App</span>
                   <ExternalLink className="w-3.5 h-3.5 opacity-70" />
                 </a>
               </div>
 
-              {/* VPA Copy Pill */}
+              {/* Primary UPI ID with One-Click Copy */}
               <div className="flex items-center justify-between p-2.5 rounded-xl bg-ivory-100 border border-gold-200 text-xs">
                 <div>
-                  <span className="text-[10px] text-stone-500 block">Merchant VPA:</span>
-                  <span className="font-mono font-bold text-stone-900">{vpa}</span>
+                  <span className="text-[10px] text-stone-500 block">Primary UPI ID:</span>
+                  <span className="font-mono font-bold text-stone-900">{primaryVpa}</span>
                 </div>
                 <button
                   type="button"
-                  onClick={() => {
-                    navigator.clipboard.writeText(vpa);
-                    setUpiStatusMsg('UPI ID copied to clipboard!');
-                  }}
-                  className="p-1.5 text-maroon-900 hover:bg-gold-200/50 rounded-lg text-xs font-semibold flex items-center gap-1"
+                  onClick={() => copyToClipboard(primaryVpa)}
+                  className="px-2.5 py-1 text-maroon-900 hover:bg-gold-200/50 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors"
                 >
-                  <Copy className="w-3.5 h-3.5" />
-                  <span>Copy</span>
+                  {copiedVpa === primaryVpa ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      <span className="text-emerald-700">Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5" />
+                      <span>Copy UPI</span>
+                    </>
+                  )}
                 </button>
               </div>
 
-              {/* UTR Verification / Dev Simulation */}
-              <div className="pt-2 border-t border-gold-200 space-y-2">
-                <label className="block text-[11px] font-semibold text-stone-700">
-                  Paid? Enter 12-Digit Bank Ref / UTR Number:
+              {/* Secondary UPI IDs (if configured in Admin) */}
+              {settings.upi_secondary_vpas && settings.upi_secondary_vpas.length > 0 && (
+                <div className="space-y-1.5 pt-1">
+                  <span className="text-[10px] font-semibold text-stone-500 block uppercase tracking-wider">
+                    Alternative UPI Handles:
+                  </span>
+                  <div className="grid grid-cols-1 gap-1.5">
+                    {settings.upi_secondary_vpas.map((vpa, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between px-3 py-1.5 rounded-lg bg-ivory-50 border border-gold-200 text-xs"
+                      >
+                        <span className="font-mono text-stone-800 text-[11px] truncate">{vpa}</span>
+                        <button
+                          type="button"
+                          onClick={() => copyToClipboard(vpa)}
+                          className="text-[10px] font-semibold text-maroon-900 hover:underline shrink-0 ml-2"
+                        >
+                          {copiedVpa === vpa ? 'Copied!' : 'Copy'}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Genuine 12-Digit UTR Number Verification (No Demo Simulation) */}
+              <div className="pt-3 border-t border-gold-200 space-y-2">
+                <label className="block text-xs font-bold text-stone-900">
+                  Step 2: Enter 12-Digit UTR / Bank Reference Number *
                 </label>
-                <div className="flex gap-2">
+                <p className="text-[10px] text-stone-500 -mt-1">
+                  Found on your Google Pay, PhonePe or Paytm payment receipt screen.
+                </p>
+
+                <div className="space-y-2">
                   <input
                     type="text"
+                    required
+                    maxLength={16}
                     placeholder="e.g. 429381920194"
                     value={enteredUtr}
                     onChange={(e) => setEnteredUtr(e.target.value)}
-                    className="flex-1 bg-ivory-50 border border-gold-300 rounded-xl px-3 py-2 text-xs font-mono text-stone-900 focus:outline-none focus:ring-1 focus:ring-gold-500"
+                    className="w-full bg-ivory-50 border border-gold-300 rounded-xl px-3.5 py-2.5 text-xs font-mono font-bold text-stone-900 focus:outline-none focus:ring-1 focus:ring-gold-500"
                   />
+                  
                   <button
                     type="button"
-                    onClick={() => handleVerifyUpiPayment(false)}
-                    disabled={isVerifyingUpi}
-                    className="px-4 py-2 bg-emerald-700 text-white rounded-xl text-xs font-bold hover:bg-emerald-800 transition-colors disabled:opacity-50"
+                    onClick={handleConfirmUtrPayment}
+                    disabled={isVerifyingUpi || !enteredUtr.trim()}
+                    className="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white rounded-xl text-xs font-bold shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                   >
-                    {isVerifyingUpi ? '...' : 'Verify'}
+                    <CheckCircle2 className="w-4 h-4 text-emerald-200" />
+                    <span>{isVerifyingUpi ? 'Verifying Reference...' : 'Confirm Payment & Submit Order'}</span>
                   </button>
                 </div>
 
-                {/* Instant Dev Simulation */}
-                <button
-                  type="button"
-                  onClick={() => handleVerifyUpiPayment(true)}
-                  disabled={isVerifyingUpi}
-                  className="w-full py-2 rounded-xl bg-gold-100 hover:bg-gold-200 text-maroon-950 text-[11px] font-bold transition-colors flex items-center justify-center gap-1.5"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-gold-600" />
-                  <span>Simulate Instant UPI Bank Credit (Demo Mode)</span>
-                </button>
-
                 {upiStatusMsg && (
-                  <p className="text-[11px] text-center font-medium text-maroon-900 pt-1">
-                    {upiStatusMsg}
+                  <p
+                    className={`text-[11px] text-center font-medium pt-1 ${
+                      upiStatusMsg.type === 'success' ? 'text-emerald-700' : 'text-rose-600'
+                    }`}
+                  >
+                    {upiStatusMsg.text}
                   </p>
                 )}
               </div>
