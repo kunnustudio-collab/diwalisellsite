@@ -108,8 +108,25 @@ export default function OrderConfirmationPage() {
               Order ID: <strong className="text-maroon-900 font-mono">{order.order_number}</strong>
             </div>
             <div className="bg-ivory-100 px-4 py-2 rounded-full border border-gold-200">
-              Payment: <strong className="uppercase">{order.payment_method === 'cod' ? 'Cash on Delivery' : 'Online Payment'}</strong>
+              Payment:{' '}
+              <strong className="uppercase">
+                {order.payment_method === 'youpi'
+                  ? 'UPI (YouPI-PG)'
+                  : order.payment_method === 'cod'
+                  ? 'Cash on Delivery'
+                  : 'Online Payment'}
+              </strong>
             </div>
+            {order.payment_status === 'paid' ? (
+              <div className="bg-emerald-100 text-emerald-900 px-4 py-2 rounded-full border border-emerald-300 flex items-center gap-1.5 font-bold">
+                <CheckCircle className="w-3.5 h-3.5 text-emerald-700" />
+                <span>Payment Confirmed {order.utr ? `(UTR: ${order.utr})` : ''}</span>
+              </div>
+            ) : order.payment_method === 'youpi' ? (
+              <div className="bg-amber-100 text-amber-900 px-4 py-2 rounded-full border border-amber-300 flex items-center gap-1.5">
+                <span>Awaiting UPI Bank Credit</span>
+              </div>
+            ) : null}
             <div className="bg-emerald-50 text-emerald-800 px-4 py-2 rounded-full border border-emerald-200 flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5" />
               <span>Est. Delivery: {estDelivery.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })}</span>

@@ -158,8 +158,147 @@ export default function AdminSettingsPage() {
             </h3>
           </div>
 
-          <div className="space-y-4">
-            <label className="flex items-center gap-3 cursor-pointer">
+          <div className="space-y-6">
+            
+            {/* YouPI-PG Sovereign Gateway */}
+            <div className="p-5 rounded-2xl bg-gradient-to-br from-amber-50/70 via-gold-50/40 to-white border border-gold-300 shadow-sm space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-gold-200">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-maroon-900 text-gold-300 flex items-center justify-center font-bold text-xs">
+                    UPI
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-serif font-bold text-sm text-stone-900">
+                        YouPI-PG Sovereign UPI Payment Gateway
+                      </span>
+                      <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
+                        0% Platform Fee
+                      </span>
+                    </div>
+                    <span className="text-[11px] text-stone-500">
+                      Direct-to-bank settlement via standard NPCI UPI rails. Open-source & self-hosted.
+                    </span>
+                  </div>
+                </div>
+
+                <label className="relative inline-flex items-center cursor-pointer self-start sm:self-auto">
+                  <input
+                    type="checkbox"
+                    checked={settings.youpi_enabled}
+                    onChange={(e) => setSettings({ ...settings, youpi_enabled: e.target.checked })}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-maroon-900"></div>
+                </label>
+              </div>
+
+              {settings.youpi_enabled && (
+                <div className="space-y-4 pt-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-stone-700 mb-1">
+                        Gateway Base URL
+                      </label>
+                      <input
+                        type="url"
+                        placeholder="http://localhost:7000 or https://pay.yourdomain.com"
+                        value={settings.youpi_gateway_url || ''}
+                        onChange={(e) =>
+                          setSettings({ ...settings, youpi_gateway_url: e.target.value })
+                        }
+                        className="w-full bg-white border border-gold-300 rounded-xl px-3.5 py-2 text-xs text-stone-900 font-mono focus:ring-1 focus:ring-gold-500"
+                      />
+                      <span className="text-[10px] text-stone-500 mt-1 block">
+                        Host where your YouPI instance is running (serves <code>/youpi.js</code>).
+                      </span>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-stone-700 mb-1">
+                        Merchant Public Key (<code>data-youpi-key</code>)
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="yp_live_..."
+                        value={settings.youpi_merchant_key || ''}
+                        onChange={(e) =>
+                          setSettings({ ...settings, youpi_merchant_key: e.target.value })
+                        }
+                        className="w-full bg-white border border-gold-300 rounded-xl px-3.5 py-2 text-xs text-stone-900 font-mono focus:ring-1 focus:ring-gold-500"
+                      />
+                      <span className="text-[10px] text-stone-500 mt-1 block">
+                        Assigned merchant identifier from your YouPI dashboard.
+                      </span>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-stone-700 mb-1">
+                        Webhook HMAC-SHA256 Secret
+                      </label>
+                      <input
+                        type="password"
+                        placeholder="yp_sec_..."
+                        value={settings.youpi_webhook_secret || ''}
+                        onChange={(e) =>
+                          setSettings({ ...settings, youpi_webhook_secret: e.target.value })
+                        }
+                        className="w-full bg-white border border-gold-300 rounded-xl px-3.5 py-2 text-xs text-stone-900 font-mono focus:ring-1 focus:ring-gold-500"
+                      />
+                      <span className="text-[10px] text-stone-500 mt-1 block">
+                        Used to verify <code>X-Gateway-Signature: sha256=&lt;hex&gt;</code>.
+                      </span>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-stone-700 mb-1">
+                        Merchant UPI VPA (Direct Bank Destination)
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="deepaura@upi"
+                        value={settings.youpi_vpa || ''}
+                        onChange={(e) =>
+                          setSettings({ ...settings, youpi_vpa: e.target.value })
+                        }
+                        className="w-full bg-white border border-gold-300 rounded-xl px-3.5 py-2 text-xs text-stone-900 font-mono focus:ring-1 focus:ring-gold-500"
+                      />
+                      <span className="text-[10px] text-stone-500 mt-1 block">
+                        Your direct bank UPI handle (GPay/PhonePe/BHIM/Bank ID).
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-white/90 rounded-xl border border-gold-200 text-xs space-y-1">
+                    <span className="font-semibold text-stone-700 block">
+                      Webhook Delivery Endpoint URL:
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <code className="text-maroon-900 font-mono font-bold text-[11px] bg-ivory-100 px-2.5 py-1 rounded border border-gold-200 flex-1 truncate">
+                        http://localhost:8080/api/webhooks/youpi
+                      </code>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const url = `${window.location.origin}/api/webhooks/youpi`;
+                          navigator.clipboard.writeText(url);
+                          setAlertMsg({ type: 'success', text: `Webhook URL copied: ${url}` });
+                        }}
+                        className="px-3 py-1 bg-maroon-900 text-gold-100 rounded-lg font-semibold text-[11px] hover:bg-maroon-800 transition-colors"
+                      >
+                        Copy URL
+                      </button>
+                    </div>
+                    <span className="text-[10px] text-stone-500 block pt-1">
+                      Configure this exact URL in your YouPI gateway settings. YouPI will dispatch cryptographic signed webhooks upon UPI bank credits.
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Cash on Delivery */}
+            <label className="flex items-center gap-3 cursor-pointer p-4 rounded-2xl border border-gold-200 hover:border-gold-300 transition-colors bg-white">
               <input
                 type="checkbox"
                 checked={settings.cod_enabled}
@@ -176,7 +315,8 @@ export default function AdminSettingsPage() {
               </div>
             </label>
 
-            <label className="flex items-center gap-3 cursor-pointer">
+            {/* Razorpay Online Payments */}
+            <label className="flex items-center gap-3 cursor-pointer p-4 rounded-2xl border border-gold-200 hover:border-gold-300 transition-colors bg-white">
               <input
                 type="checkbox"
                 checked={settings.razorpay_enabled}
@@ -185,13 +325,14 @@ export default function AdminSettingsPage() {
               />
               <div>
                 <span className="font-bold text-xs text-stone-900 block">
-                  Enable Razorpay Online Payments (UPI, Cards & NetBanking)
+                  Enable Razorpay Online Payments (Cards & NetBanking)
                 </span>
                 <span className="text-[11px] text-stone-500">
                   Requires NEXT_PUBLIC_RAZORPAY_KEY_ID & RAZORPAY_KEY_SECRET in .env.local.
                 </span>
               </div>
             </label>
+
           </div>
         </div>
 

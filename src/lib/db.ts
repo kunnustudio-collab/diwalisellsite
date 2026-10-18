@@ -11,6 +11,7 @@ import {
   FAQ,
   SiteSettings,
   AdminProfile,
+  PaymentMethod,
 } from '@/types';
 import {
   INITIAL_CATEGORIES,
@@ -535,7 +536,7 @@ export interface CreateOrderInput {
   city: string;
   state: string;
   pin_code: string;
-  payment_method: 'cod' | 'razorpay';
+  payment_method: PaymentMethod;
   coupon_code?: string;
   items: {
     product_id: string;
@@ -641,8 +642,8 @@ export async function createOrder(input: CreateOrderInput): Promise<{
     state: input.state.trim(),
     pin_code: input.pin_code.trim(),
     payment_method: input.payment_method,
-    payment_status: input.payment_method === 'cod' ? 'pending' : 'pending',
-    order_status: 'Confirmed',
+    payment_status: 'pending',
+    order_status: input.payment_method === 'cod' ? 'Confirmed' : 'Pending',
     subtotal,
     discount_amount: discountAmount,
     coupon_code: validatedCouponCode,
@@ -650,6 +651,8 @@ export async function createOrder(input: CreateOrderInput): Promise<{
     total_amount: finalTotal,
     tracking_number: null,
     courier_name: null,
+    payment_id: null,
+    utr: null,
     notes: input.notes || null,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
@@ -678,6 +681,35 @@ export async function createOrder(input: CreateOrderInput): Promise<{
   return { success: true, order: newOrder };
 }
 
+export async function markOrderPaid(
+  orderNumberOrId: string,
+  details?: {
+    utr?: string;
+    paymentId?: string;
+    notes?: string;
+  }
+): Promise<Order | null> {
+  const db = getDatabase();
+  const order = db.orders.find(
+    (o) =>
+      o.id === orderNumberOrId ||
+      o.order_number.toUpperCase() === orderNumberOrId.toUpperCase()
+  );
+  if (!order) return null;
+
+  order.payment_status = 'paid';
+  order.order_status = 'Confirmed';
+  if (details?.utr) order.utr = details.utr;
+  if (details?.paymentId) order.payment_id = details.paymentId;
+  if (details?.notes) {
+    order.notes = order.notes ? `${order.notes} | ${details.notes}` : details.notes;
+  }
+  order.updated_at = new Date().toISOString();
+
+  await saveDatabase(db);
+  return order;
+}
+
 export async function updateOrderStatus(
   orderId: string,
   status: Order['order_status'],
@@ -685,16 +717,24 @@ export async function updateOrderStatus(
     payment_status?: Order['payment_status'];
     tracking_number?: string;
     courier_name?: string;
+    payment_id?: string;
+    utr?: string;
+    notes?: string;
   }
 ): Promise<Order | null> {
   const db = getDatabase();
-  const order = db.orders.find((o) => o.id === orderId);
+  const order = db.orders.find(
+    (o) => o.id === orderId || o.order_number.toUpperCase() === orderId.toUpperCase()
+  );
   if (!order) return null;
 
   order.order_status = status;
   if (details?.payment_status) order.payment_status = details.payment_status;
   if (details?.tracking_number !== undefined) order.tracking_number = details.tracking_number;
   if (details?.courier_name !== undefined) order.courier_name = details.courier_name;
+  if (details?.payment_id !== undefined) order.payment_id = details.payment_id;
+  if (details?.utr !== undefined) order.utr = details.utr;
+  if (details?.notes !== undefined) order.notes = details.notes;
   order.updated_at = new Date().toISOString();
 
   await saveDatabase(db);
@@ -803,6 +843,7 @@ export async function moderateReview(
 
 export async function getSiteSettings(): Promise<SiteSettings> {
   const db = getDatabase();
+  db.settings = { ...INITIAL_SETTINGS, ...db.settings };
   return db.settings;
 }
 

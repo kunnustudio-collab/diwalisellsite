@@ -120,7 +120,18 @@ export default function OrderStatusTrackingPage() {
               Order Status: <span className="text-gold-700">{order.order_status}</span>
             </h1>
             <p className="text-xs text-stone-500 mt-1">
-              Ordered on {new Date(order.created_at).toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })}
+              Ordered on {new Date(order.created_at).toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })} • Payment:{' '}
+              <strong className="text-stone-800 uppercase">
+                {order.payment_method === 'youpi'
+                  ? 'UPI (YouPI-PG)'
+                  : order.payment_method === 'cod'
+                  ? 'Cash on Delivery'
+                  : 'Online'}
+              </strong>
+              {' '}-{' '}
+              <span className={`font-bold ${order.payment_status === 'paid' ? 'text-emerald-700' : 'text-amber-700'}`}>
+                {order.payment_status === 'paid' ? `Paid (UTR: ${order.utr || 'Verified'})` : 'Payment Pending'}
+              </span>
             </p>
           </div>
 

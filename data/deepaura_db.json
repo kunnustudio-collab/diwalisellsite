@@ -53,7 +53,7 @@
       "price": 649,
       "original_price": 999,
       "sku": "DA-LIGHT-001",
-      "stock": 43,
+      "stock": 39,
       "category_id": "diwali-lights",
       "is_active": true,
       "is_featured": true,
@@ -72,7 +72,7 @@
       "rating": 4.8,
       "reviews_count": 38,
       "created_at": "2026-10-01T10:00:00.000Z",
-      "updated_at": "2026-10-18T19:48:04.217Z"
+      "updated_at": "2026-10-18T20:12:03.802Z"
     },
     {
       "id": "prod-002",
@@ -83,11 +83,11 @@
       "price": 899,
       "original_price": 1399,
       "sku": "DA-DIYA-002",
-      "stock": 30,
+      "stock": 27,
       "category_id": "diyas-lamps",
       "is_active": true,
       "is_featured": true,
-      "image_url": "https://images.unsplash.com/photo-1605647540924-852290f6b0d5?auto=format&fit=crop&w=800&q=80",
+      "image_url": "/uploads/product-1792353608354-jlui5r.png",
       "additional_images": [
         "https://images.unsplash.com/photo-1573055418049-c8e0b7e3403b?auto=format&fit=crop&w=800&q=80",
         "https://images.unsplash.com/photo-1603555501671-8f96b3fce8b4?auto=format&fit=crop&w=800&q=80"
@@ -101,7 +101,8 @@
       },
       "rating": 4.9,
       "reviews_count": 52,
-      "created_at": "2026-10-02T10:00:00.000Z"
+      "created_at": "2026-10-02T10:00:00.000Z",
+      "updated_at": "2026-10-18T20:12:03.802Z"
     },
     {
       "id": "prod-003",
@@ -112,7 +113,7 @@
       "price": 749,
       "original_price": 1199,
       "sku": "DA-TORAN-003",
-      "stock": 25,
+      "stock": 22,
       "category_id": "rangoli-toran",
       "is_active": true,
       "is_featured": true,
@@ -128,7 +129,8 @@
       },
       "rating": 4.7,
       "reviews_count": 24,
-      "created_at": "2026-10-03T10:00:00.000Z"
+      "created_at": "2026-10-03T10:00:00.000Z",
+      "updated_at": "2026-10-18T20:03:48.915Z"
     },
     {
       "id": "prod-004",
@@ -330,7 +332,7 @@
       "min_cart_value": 999,
       "max_discount_amount": 500,
       "max_redemptions": 500,
-      "current_redemptions": 15,
+      "current_redemptions": 16,
       "is_active": true,
       "starts_at": "2026-10-01T00:00:00.000Z",
       "expires_at": "2026-11-20T23:59:59.000Z",
@@ -356,16 +358,17 @@
       "id": "disc-003",
       "code": "LIGHTS100",
       "type": "fixed",
-      "value": 100,
+      "value": 20000,
       "min_cart_value": 600,
-      "max_discount_amount": 100,
+      "max_discount_amount": 20000,
       "max_redemptions": 100,
-      "current_redemptions": 9,
+      "current_redemptions": 10,
       "is_active": true,
       "starts_at": "2026-10-01T00:00:00.000Z",
       "expires_at": "2026-11-30T23:59:59.000Z",
       "allow_combine": true,
-      "created_at": "2026-10-01T00:00:00.000Z"
+      "created_at": "2026-10-01T00:00:00.000Z",
+      "applicable_product_ids": null
     }
   ],
   "orders": [
@@ -403,6 +406,258 @@
           "unit_price": 649,
           "quantity": 2,
           "total_price": 1298
+        }
+      ]
+    },
+    {
+      "id": "ord-mve8wtz9-llqo",
+      "order_number": "DA-2026-1806",
+      "customer_name": "Karan singh",
+      "customer_email": "kunnustudio@gmail.com",
+      "customer_phone": "9520956378",
+      "shipping_address": "etawah\netawah",
+      "city": "Etawah",
+      "state": "Uttar Pradesh",
+      "pin_code": "206126",
+      "payment_method": "cod",
+      "payment_status": "pending",
+      "order_status": "Processing",
+      "subtotal": 1498,
+      "discount_amount": 0,
+      "coupon_code": null,
+      "shipping_fee": 0,
+      "total_amount": 1498,
+      "tracking_number": null,
+      "courier_name": "Bluedart Express",
+      "notes": null,
+      "created_at": "2026-10-18T19:55:57.765Z",
+      "updated_at": "2026-10-18T19:57:16.734Z",
+      "items": [
+        {
+          "id": "item-mve8wtz9-4dy3",
+          "order_id": "ord-mve8wtz9-llqo",
+          "product_id": "prod-003",
+          "product_name": "Floral Door Toran",
+          "product_sku": "DA-TORAN-003",
+          "product_image": "https://images.unsplash.com/photo-1576872381149-7847515ce5d8?auto=format&fit=crop&w=800&q=80",
+          "unit_price": 749,
+          "quantity": 2,
+          "total_price": 1498
+        }
+      ]
+    },
+    {
+      "id": "ord-mve96xir-sq7q",
+      "order_number": "DA-2026-2500",
+      "customer_name": "Karan singh",
+      "customer_email": "kunnustudio@gmail.com",
+      "customer_phone": "9520956378",
+      "shipping_address": "etawah\netawah",
+      "city": "Etawah",
+      "state": "Uttar Pradesh",
+      "pin_code": "206126",
+      "payment_method": "cod",
+      "payment_status": "pending",
+      "order_status": "Delivered",
+      "subtotal": 749,
+      "discount_amount": 100,
+      "coupon_code": "LIGHTS100",
+      "shipping_fee": 99,
+      "total_amount": 748,
+      "tracking_number": null,
+      "courier_name": "Bluedart Express",
+      "notes": null,
+      "created_at": "2026-10-18T20:03:48.915Z",
+      "updated_at": "2026-10-18T20:04:14.356Z",
+      "items": [
+        {
+          "id": "item-mve96xir-hv2m",
+          "order_id": "ord-mve96xir-sq7q",
+          "product_id": "prod-003",
+          "product_name": "Floral Door Toran",
+          "product_sku": "DA-TORAN-003",
+          "product_image": "https://images.unsplash.com/photo-1576872381149-7847515ce5d8?auto=format&fit=crop&w=800&q=80",
+          "unit_price": 749,
+          "quantity": 1,
+          "total_price": 749
+        }
+      ]
+    },
+    {
+      "id": "ord-mve9dbt0-zlqk",
+      "order_number": "DA-2026-4200",
+      "customer_name": "Ananya Sharma",
+      "customer_email": "ananya.sharma@festivetest.in",
+      "customer_phone": "9876501234",
+      "shipping_address": "Flat 301, Diya Heights, Baner Road",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "pin_code": "411045",
+      "payment_method": "youpi",
+      "payment_status": "paid",
+      "order_status": "Confirmed",
+      "subtotal": 1548,
+      "discount_amount": 0,
+      "coupon_code": null,
+      "shipping_fee": 0,
+      "total_amount": 1548,
+      "tracking_number": null,
+      "courier_name": null,
+      "payment_id": "yp_pay_test_001",
+      "utr": "UTR_TEST_99887766",
+      "notes": "Please pack in festive gift wrapping | Verified via YouPI-PG Webhook (Amount: ₹1548, UTR: UTR_TEST_99887766)",
+      "created_at": "2026-10-18T20:08:47.364Z",
+      "updated_at": "2026-10-18T20:08:47.389Z",
+      "items": [
+        {
+          "id": "item-mve9dbt0-mzee",
+          "order_id": "ord-mve9dbt0-zlqk",
+          "product_id": "prod-001",
+          "product_name": "Premium LED Fairy String Lights",
+          "product_sku": "DA-LIGHT-001",
+          "product_image": "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80",
+          "unit_price": 649,
+          "quantity": 1,
+          "total_price": 649
+        },
+        {
+          "id": "item-mve9dbt0-e3ou",
+          "order_id": "ord-mve9dbt0-zlqk",
+          "product_id": "prod-002",
+          "product_name": "Decorative Brass-Style Diya Set",
+          "product_sku": "DA-DIYA-002",
+          "product_image": "/uploads/product-1792353608354-jlui5r.png",
+          "unit_price": 899,
+          "quantity": 1,
+          "total_price": 899
+        }
+      ]
+    },
+    {
+      "id": "ord-mve9enyy-3ozo",
+      "order_number": "DA-2026-6817",
+      "customer_name": "Karan singh",
+      "customer_email": "kunnustudio@gmail.com",
+      "customer_phone": "9520956378",
+      "shipping_address": "etawah\netawah",
+      "city": "Etawah",
+      "state": "Uttar Pradesh",
+      "pin_code": "206126",
+      "payment_method": "youpi",
+      "payment_status": "paid",
+      "order_status": "Confirmed",
+      "subtotal": 899,
+      "discount_amount": 0,
+      "coupon_code": null,
+      "shipping_fee": 99,
+      "total_amount": 998,
+      "tracking_number": null,
+      "courier_name": null,
+      "payment_id": null,
+      "utr": null,
+      "notes": null,
+      "created_at": "2026-10-18T20:09:49.787Z",
+      "updated_at": "2026-10-18T20:11:02.397Z",
+      "items": [
+        {
+          "id": "item-mve9enyy-35y3",
+          "order_id": "ord-mve9enyy-3ozo",
+          "product_id": "prod-002",
+          "product_name": "Decorative Brass-Style Diya Set",
+          "product_sku": "DA-DIYA-002",
+          "product_image": "/uploads/product-1792353608354-jlui5r.png",
+          "unit_price": 899,
+          "quantity": 1,
+          "total_price": 899
+        }
+      ]
+    },
+    {
+      "id": "ord-mve9hcn8-u90y",
+      "order_number": "DA-2026-7878",
+      "customer_name": "Aarav Patel",
+      "customer_email": "aarav.1792354315075@testmail.com",
+      "customer_phone": "9876543210",
+      "shipping_address": "101, Lotus Villa, Marine Drive",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pin_code": "400020",
+      "payment_method": "cod",
+      "payment_status": "pending",
+      "order_status": "Shipped",
+      "subtotal": 1298,
+      "discount_amount": 194.7,
+      "coupon_code": "DIWALI15",
+      "shipping_fee": 0,
+      "total_amount": 1103.3,
+      "tracking_number": "BD-DIWALI-987654",
+      "courier_name": "Bluedart Express",
+      "payment_id": null,
+      "utr": null,
+      "notes": null,
+      "created_at": "2026-10-18T20:11:55.076Z",
+      "updated_at": "2026-10-18T20:11:55.174Z",
+      "items": [
+        {
+          "id": "item-mve9hcn8-zb3r",
+          "order_id": "ord-mve9hcn8-u90y",
+          "product_id": "prod-001",
+          "product_name": "Premium LED Fairy String Lights",
+          "product_sku": "DA-LIGHT-001",
+          "product_image": "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80",
+          "unit_price": 649,
+          "quantity": 2,
+          "total_price": 1298
+        }
+      ]
+    },
+    {
+      "id": "ord-mve9hjdm-bwh2",
+      "order_number": "DA-2026-4493",
+      "customer_name": "Ananya Sharma",
+      "customer_email": "ananya.sharma@festivetest.in",
+      "customer_phone": "9876501234",
+      "shipping_address": "Flat 301, Diya Heights, Baner Road",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "pin_code": "411045",
+      "payment_method": "youpi",
+      "payment_status": "paid",
+      "order_status": "Confirmed",
+      "subtotal": 1548,
+      "discount_amount": 0,
+      "coupon_code": null,
+      "shipping_fee": 0,
+      "total_amount": 1548,
+      "tracking_number": null,
+      "courier_name": null,
+      "payment_id": "yp_pay_test_001",
+      "utr": "UTR_TEST_99887766",
+      "notes": "Please pack in festive gift wrapping | Verified via YouPI-PG Webhook (Amount: ₹1548, UTR: UTR_TEST_99887766)",
+      "created_at": "2026-10-18T20:12:03.802Z",
+      "updated_at": "2026-10-18T20:12:03.829Z",
+      "items": [
+        {
+          "id": "item-mve9hjdm-wm5b",
+          "order_id": "ord-mve9hjdm-bwh2",
+          "product_id": "prod-001",
+          "product_name": "Premium LED Fairy String Lights",
+          "product_sku": "DA-LIGHT-001",
+          "product_image": "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80",
+          "unit_price": 649,
+          "quantity": 1,
+          "total_price": 649
+        },
+        {
+          "id": "item-mve9hjdm-16wa",
+          "order_id": "ord-mve9hjdm-bwh2",
+          "product_id": "prod-002",
+          "product_name": "Decorative Brass-Style Diya Set",
+          "product_sku": "DA-DIYA-002",
+          "product_image": "/uploads/product-1792353608354-jlui5r.png",
+          "unit_price": 899,
+          "quantity": 1,
+          "total_price": 899
         }
       ]
     }
@@ -449,6 +704,21 @@
       "admin_reply": null,
       "created_at": "2026-10-18T19:48:04.306Z",
       "updated_at": "2026-10-18T19:48:04.306Z"
+    },
+    {
+      "id": "rev-mve9hcnj-ro43",
+      "product_id": "prod-001",
+      "customer_name": "Pooja Hegde",
+      "customer_email": "pooja@example.com",
+      "rating": 5,
+      "title": "Divine Festive Glow",
+      "comment": "The copper fairy lights gave an absolutely mesmerizing aura to our living room balcony.",
+      "status": "pending",
+      "is_flagged": false,
+      "is_sample": false,
+      "admin_reply": null,
+      "created_at": "2026-10-18T20:11:55.087Z",
+      "updated_at": "2026-10-18T20:11:55.087Z"
     }
   ],
   "faqs": [
@@ -523,6 +793,11 @@
     "free_shipping_threshold": 999,
     "cod_enabled": true,
     "razorpay_enabled": false,
+    "youpi_enabled": true,
+    "youpi_gateway_url": "http://localhost:7000",
+    "youpi_merchant_key": "yp_live_deepaura_diwali2026",
+    "youpi_webhook_secret": "yp_sec_diwali_decor_2026_supersecret",
+    "youpi_vpa": "deepaura@upi",
     "tax_percentage": 0,
     "currency": "INR",
     "currency_symbol": "₹",
@@ -553,6 +828,22 @@
       "customer_email": "aarav.patel@testmail.com",
       "discount_amount": 194.7,
       "redeemed_at": "2026-10-18T19:48:04.217Z"
+    },
+    {
+      "id": "red-mve96xir",
+      "coupon_id": "disc-003",
+      "order_id": "ord-mve96xir-sq7q",
+      "customer_email": "kunnustudio@gmail.com",
+      "discount_amount": 100,
+      "redeemed_at": "2026-10-18T20:03:48.915Z"
+    },
+    {
+      "id": "red-mve9hcn8",
+      "coupon_id": "disc-001",
+      "order_id": "ord-mve9hcn8-u90y",
+      "customer_email": "aarav.1792354315075@testmail.com",
+      "discount_amount": 194.7,
+      "redeemed_at": "2026-10-18T20:11:55.076Z"
     }
   ]
 }

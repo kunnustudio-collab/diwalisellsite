@@ -31,6 +31,7 @@ export default function AdminOrdersPage() {
   // Selected Order for Status / Tracking Update Modal
   const [updatingOrder, setUpdatingOrder] = useState<Order | null>(null);
   const [newStatus, setNewStatus] = useState<OrderStatus>('Pending');
+  const [newPaymentStatus, setNewPaymentStatus] = useState<string>('pending');
   const [trackingNumber, setTrackingNumber] = useState('');
   const [courierName, setCourierName] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
@@ -63,6 +64,7 @@ export default function AdminOrdersPage() {
   const handleOpenUpdateModal = (order: Order) => {
     setUpdatingOrder(order);
     setNewStatus(order.order_status);
+    setNewPaymentStatus(order.payment_status);
     setTrackingNumber(order.tracking_number || '');
     setCourierName(order.courier_name || 'Bluedart Express');
   };
@@ -78,6 +80,7 @@ export default function AdminOrdersPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           order_status: newStatus,
+          payment_status: newPaymentStatus,
           tracking_number: trackingNumber.trim() || null,
           courier_name: courierName.trim() || null,
         }),
@@ -304,15 +307,24 @@ export default function AdminOrdersPage() {
                     {/* Payment */}
                     <td className="py-3.5 px-4">
                       <span className="font-bold uppercase text-[10px] block">
-                        {order.payment_method === 'cod' ? 'Cash on Delivery' : 'Online'}
+                        {order.payment_method === 'youpi'
+                          ? 'YouPI (UPI)'
+                          : order.payment_method === 'cod'
+                          ? 'Cash on Delivery'
+                          : 'Online'}
                       </span>
                       <span
                         className={`text-[10px] font-semibold ${
                           order.payment_status === 'paid' ? 'text-emerald-700' : 'text-amber-700'
                         }`}
                       >
-                        {order.payment_status}
+                        {order.payment_status === 'paid' ? 'Paid ✓' : 'Pending'}
                       </span>
+                      {order.utr && (
+                        <span className="text-[9px] text-stone-500 font-mono block truncate max-w-[110px]" title={order.utr}>
+                          Ref: {order.utr}
+                        </span>
+                      )}
                     </td>
 
                     {/* Status Badge */}
@@ -408,6 +420,22 @@ export default function AdminOrdersPage() {
                   <option value="Delivered">Delivered</option>
                   <option value="Cancelled">Cancelled</option>
                   <option value="Refunded">Refunded</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-stone-700 mb-1">
+                  Payment Status
+                </label>
+                <select
+                  value={newPaymentStatus}
+                  onChange={(e) => setNewPaymentStatus(e.target.value)}
+                  className="w-full bg-ivory-50 border border-gold-300 rounded-xl px-3.5 py-2.5 text-xs font-bold text-stone-900 focus:outline-none focus:ring-1 focus:ring-gold-500"
+                >
+                  <option value="pending">Pending (Awaiting Payment / COD)</option>
+                  <option value="paid">Paid (Confirmed / UPI Credit Received)</option>
+                  <option value="failed">Failed</option>
+                  <option value="refunded">Refunded</option>
                 </select>
               </div>
 

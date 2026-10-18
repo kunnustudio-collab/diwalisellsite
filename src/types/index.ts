@@ -58,7 +58,7 @@ export interface Discount {
   created_at?: string;
 }
 
-export type PaymentMethod = 'cod' | 'razorpay';
+export type PaymentMethod = 'cod' | 'razorpay' | 'youpi';
 export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded';
 export type OrderStatus =
   | 'Pending'
@@ -101,6 +101,8 @@ export interface Order {
   total_amount: number;
   tracking_number?: string | null;
   courier_name?: string | null;
+  payment_id?: string | null;
+  utr?: string | null;
   notes?: string | null;
   created_at: string;
   updated_at: string;
@@ -185,6 +187,11 @@ export interface SiteSettings {
   free_shipping_threshold: number;
   cod_enabled: boolean;
   razorpay_enabled: boolean;
+  youpi_enabled: boolean;
+  youpi_gateway_url?: string;
+  youpi_merchant_key?: string;
+  youpi_webhook_secret?: string;
+  youpi_vpa?: string;
   tax_percentage: number;
   currency: string;
   currency_symbol: string;
