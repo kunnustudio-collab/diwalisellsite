@@ -53,7 +53,7 @@
       "price": 649,
       "original_price": 999,
       "sku": "DA-LIGHT-001",
-      "stock": 33,
+      "stock": 29,
       "category_id": "diwali-lights",
       "is_active": true,
       "is_featured": true,
@@ -72,7 +72,7 @@
       "rating": 4.8,
       "reviews_count": 38,
       "created_at": "2026-10-01T10:00:00.000Z",
-      "updated_at": "2026-10-18T20:36:47.881Z"
+      "updated_at": "2026-10-19T16:42:18.174Z"
     },
     {
       "id": "prod-002",
@@ -342,6 +342,48 @@
       "reviews_count": 0,
       "created_at": "2026-10-18T20:36:44.711Z",
       "updated_at": "2026-10-18T20:36:44.711Z"
+    },
+    {
+      "id": "prod-mveaoej6",
+      "name": "11th Extra Active Product",
+      "slug": "11th-extra-active-product",
+      "description": "",
+      "short_description": "",
+      "price": 299,
+      "original_price": null,
+      "sku": "DA-EXTRA-3726",
+      "stock": 10,
+      "category_id": "diwali-lights",
+      "is_active": true,
+      "is_featured": false,
+      "image_url": "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80",
+      "additional_images": [],
+      "specifications": {},
+      "rating": 5,
+      "reviews_count": 0,
+      "created_at": "2026-10-18T20:45:23.730Z",
+      "updated_at": "2026-10-18T20:45:23.730Z"
+    },
+    {
+      "id": "prod-mvfhfmzf",
+      "name": "11th Extra Active Product",
+      "slug": "11th-extra-active-product",
+      "description": "",
+      "short_description": "",
+      "price": 299,
+      "original_price": null,
+      "sku": "DA-EXTRA-8265",
+      "stock": 10,
+      "category_id": "diwali-lights",
+      "is_active": true,
+      "is_featured": false,
+      "image_url": "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80",
+      "additional_images": [],
+      "specifications": {},
+      "rating": 5,
+      "reviews_count": 0,
+      "created_at": "2026-10-19T16:42:18.267Z",
+      "updated_at": "2026-10-19T16:42:18.267Z"
     }
   ],
   "discounts": [
@@ -353,7 +395,7 @@
       "min_cart_value": 999,
       "max_discount_amount": 500,
       "max_redemptions": 500,
-      "current_redemptions": 18,
+      "current_redemptions": 20,
       "is_active": true,
       "starts_at": "2026-10-01T00:00:00.000Z",
       "expires_at": "2026-11-20T23:59:59.000Z",
@@ -937,6 +979,84 @@
           "total_price": 899
         }
       ]
+    },
+    {
+      "id": "ord-mveaoeft-7ivf",
+      "order_number": "DA-2026-3926",
+      "customer_name": "Aarav Patel",
+      "customer_email": "aarav.1792356323604@testmail.com",
+      "customer_phone": "9876543210",
+      "shipping_address": "101, Lotus Villa, Marine Drive",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pin_code": "400020",
+      "payment_method": "cod",
+      "payment_status": "pending",
+      "order_status": "Shipped",
+      "subtotal": 1298,
+      "discount_amount": 194.7,
+      "coupon_code": "DIWALI15",
+      "shipping_fee": 0,
+      "total_amount": 1103.3,
+      "tracking_number": "BD-DIWALI-987654",
+      "courier_name": "Bluedart Express",
+      "payment_id": null,
+      "utr": null,
+      "notes": null,
+      "created_at": "2026-10-18T20:45:23.609Z",
+      "updated_at": "2026-10-18T20:45:23.736Z",
+      "items": [
+        {
+          "id": "item-mveaoeft-9k5z",
+          "order_id": "ord-mveaoeft-7ivf",
+          "product_id": "prod-001",
+          "product_name": "Premium LED Fairy String Lights",
+          "product_sku": "DA-LIGHT-001",
+          "product_image": "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80",
+          "unit_price": 649,
+          "quantity": 2,
+          "total_price": 1298
+        }
+      ]
+    },
+    {
+      "id": "ord-mvfhfmwu-34xn",
+      "order_number": "DA-2026-3614",
+      "customer_name": "Aarav Patel",
+      "customer_email": "aarav.1792428138170@testmail.com",
+      "customer_phone": "9876543210",
+      "shipping_address": "101, Lotus Villa, Marine Drive",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pin_code": "400020",
+      "payment_method": "cod",
+      "payment_status": "pending",
+      "order_status": "Shipped",
+      "subtotal": 1298,
+      "discount_amount": 194.7,
+      "coupon_code": "DIWALI15",
+      "shipping_fee": 0,
+      "total_amount": 1103.3,
+      "tracking_number": "BD-DIWALI-987654",
+      "courier_name": "Bluedart Express",
+      "payment_id": null,
+      "utr": null,
+      "notes": null,
+      "created_at": "2026-10-19T16:42:18.174Z",
+      "updated_at": "2026-10-19T16:42:18.274Z",
+      "items": [
+        {
+          "id": "item-mvfhfmwu-5ua6",
+          "order_id": "ord-mvfhfmwu-34xn",
+          "product_id": "prod-001",
+          "product_name": "Premium LED Fairy String Lights",
+          "product_sku": "DA-LIGHT-001",
+          "product_image": "https://images.unsplash.com/photo-1514517521153-1be72277b32f?auto=format&fit=crop&w=800&q=80",
+          "unit_price": 649,
+          "quantity": 2,
+          "total_price": 1298
+        }
+      ]
     }
   ],
   "reviews": [
@@ -1026,6 +1146,36 @@
       "admin_reply": null,
       "created_at": "2026-10-18T20:36:44.608Z",
       "updated_at": "2026-10-18T20:36:44.608Z"
+    },
+    {
+      "id": "rev-mveaoeg7-zoko",
+      "product_id": "prod-001",
+      "customer_name": "Pooja Hegde",
+      "customer_email": "pooja@example.com",
+      "rating": 5,
+      "title": "Divine Festive Glow",
+      "comment": "The copper fairy lights gave an absolutely mesmerizing aura to our living room balcony.",
+      "status": "pending",
+      "is_flagged": false,
+      "is_sample": false,
+      "admin_reply": null,
+      "created_at": "2026-10-18T20:45:23.623Z",
+      "updated_at": "2026-10-18T20:45:23.623Z"
+    },
+    {
+      "id": "rev-mvfhfmx8-lwl1",
+      "product_id": "prod-001",
+      "customer_name": "Pooja Hegde",
+      "customer_email": "pooja@example.com",
+      "rating": 5,
+      "title": "Divine Festive Glow",
+      "comment": "The copper fairy lights gave an absolutely mesmerizing aura to our living room balcony.",
+      "status": "pending",
+      "is_flagged": false,
+      "is_sample": false,
+      "admin_reply": null,
+      "created_at": "2026-10-19T16:42:18.188Z",
+      "updated_at": "2026-10-19T16:42:18.188Z"
     }
   ],
   "faqs": [
@@ -1176,6 +1326,22 @@
       "customer_email": "aarav.1792355804590@testmail.com",
       "discount_amount": 194.7,
       "redeemed_at": "2026-10-18T20:36:44.593Z"
+    },
+    {
+      "id": "red-mveaoeft",
+      "coupon_id": "disc-001",
+      "order_id": "ord-mveaoeft-7ivf",
+      "customer_email": "aarav.1792356323604@testmail.com",
+      "discount_amount": 194.7,
+      "redeemed_at": "2026-10-18T20:45:23.609Z"
+    },
+    {
+      "id": "red-mvfhfmwu",
+      "coupon_id": "disc-001",
+      "order_id": "ord-mvfhfmwu-34xn",
+      "customer_email": "aarav.1792428138170@testmail.com",
+      "discount_amount": 194.7,
+      "redeemed_at": "2026-10-19T16:42:18.174Z"
     }
   ]
 }

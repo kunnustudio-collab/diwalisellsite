@@ -62,6 +62,7 @@ export function QuickViewModal({ product, onClose }: Props) {
                 src={currentImage}
                 alt={product.name}
                 fill
+                unoptimized
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
@@ -83,7 +84,7 @@ export function QuickViewModal({ product, onClose }: Props) {
                       currentImage === img ? 'border-maroon-800 scale-105' : 'border-gold-300 opacity-70'
                     }`}
                   >
-                    <Image src={img} alt="" fill className="object-cover" />
+                    <Image src={img} alt="" fill unoptimized className="object-cover" />
                   </button>
                 ))}
               </div>

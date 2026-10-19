@@ -77,8 +77,20 @@ export async function POST(req: NextRequest) {
       const prefix = uploadType === 'qr' ? 'upi-qr' : 'product';
       const filename = `${prefix}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}${safeExt}`;
       const filePath = path.join(uploadsDir, filename);
-
       await fs.promises.writeFile(filePath, buffer);
+
+      // Also mirror to data/uploads for persistent Railway volume storage
+      try {
+        const dataUploadsDir = path.join(process.cwd(), 'data', 'uploads');
+        if (!fs.existsSync(dataUploadsDir)) {
+          fs.mkdirSync(dataUploadsDir, { recursive: true });
+        }
+        await fs.promises.writeFile(path.join(dataUploadsDir, filename), buffer);
+      } catch (mirrorErr) {
+        // Non-critical mirror
+        console.warn('Mirror to data/uploads skipped:', mirrorErr);
+      }
+
       savedUrls.push(`/uploads/${filename}`);
     }
 

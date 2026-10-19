@@ -90,6 +90,7 @@ export function ProductDetailClient({ product, relatedProducts, settings }: Prop
                 alt={product.name}
                 fill
                 priority
+                unoptimized
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
@@ -134,7 +135,7 @@ export function ProductDetailClient({ product, relatedProducts, settings }: Prop
                         : 'border-gold-300/80 opacity-70 hover:opacity-100'
                     }`}
                   >
-                    <Image src={img} alt="" fill className="object-cover" />
+                    <Image src={img} alt="" fill unoptimized className="object-cover" />
                   </button>
                 ))}
               </div>

@@ -322,7 +322,7 @@ export default function AdminProductsPage() {
                   <td className="py-3.5 px-4">
                     <div className="flex items-center gap-3">
                       <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-gold-200 shrink-0 bg-stone-100">
-                        <Image src={p.image_url} alt="" fill className="object-cover" />
+                        <Image src={p.image_url} alt="" fill unoptimized className="object-cover" />
                       </div>
                       <div className="min-w-0">
                         <h4 className="font-serif font-bold text-stone-900 line-clamp-1">{p.name}</h4>
@@ -624,6 +624,7 @@ export default function AdminProductsPage() {
                           src={imgUrl}
                           alt={`Product Image ${idx + 1}`}
                           fill
+                          unoptimized
                           className="object-cover"
                         />
 
